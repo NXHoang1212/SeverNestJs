@@ -33,8 +33,8 @@ export class User {
     birthday: string;
 
     //reset password token mặc định là null
-    @Prop({ default: null })
-    resetPasswordToken: string;
+    @Prop({ default: null, required: false })
+    resetOTP: string;
 
     //sinh ra createAt và updateAt mặc định
     @Prop({ default: Date.now })

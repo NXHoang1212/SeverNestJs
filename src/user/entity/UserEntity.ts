@@ -12,7 +12,7 @@ export class UserEntity {
     gender: string;
     nickname: string;
     birthday: string;
-    resetPasswordToken: string;
+    resetOTP: string;
     // createdAt: Date;
     // updatedAt: Date; 
 }
