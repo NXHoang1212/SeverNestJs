@@ -19,7 +19,7 @@ import { LoggerCategory } from 'src/middleware/logger/LoggerCategory'
 })
 
 //đây là module của product
-export class ProductModule implements NestModule {
+export class CategoryModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(LoggerCategory)

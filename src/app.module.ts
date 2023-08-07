@@ -8,6 +8,7 @@ import { UserModule } from './user/module/UserModule';
 import { MulterModule } from '@nestjs/platform-express'
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { CategoryModule } from './categories/module/CategoryModule';
 
 @Module({
   imports:
@@ -33,7 +34,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
           },
         }),
       }),
-      ProductModule, UserModule
+      ProductModule, UserModule, CategoryModule
     ],
   controllers: [AppController], //điều khiển các request
   providers: [AppService], // xử lý logic database crud
