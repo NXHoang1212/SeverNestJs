@@ -34,5 +34,29 @@ export class CategoryController {
         }
     }
 
+
+    //url localhost:3000/list/update/60f9b0b0b3b0b71f0c8f0b1f
+    @Post('update/:id')
+    async update(@Param('id') id: string, @Body() body: AddCategoryRequest, @Res() res: Response) {
+        try {
+            const response = await this.productService.update(id, body);
+            return res.status(HttpStatus.OK).json(response);
+        } catch (error: any) {
+            console.log("🚀 ~ file: ProductController.ts:40 ~ ProductController ~ update ~ error", error)
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
+
+    //url locahost:3000/delete/:id
+    @Delete('delete/:id')
+    async delete(@Param('id') id: string, @Res() res: Response) {
+        try {
+            const response = await this.productService.delete(id);
+            return res.status(HttpStatus.OK).json(response);
+        } catch (error: any) {
+            console.log("🚀 ~ file: ProductController.ts:51 ~ ProductController ~ delete ~ error", error)
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
 }
 

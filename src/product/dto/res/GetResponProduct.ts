@@ -1,8 +1,8 @@
 import { ProductEntity } from "../../entity/ProductEntity";
 
-export class GetProductRespon {
-    status: Boolean;
-    message: String;
-    //data là một mảng các đối tượng ProductEntity
+export interface GetProductRespon {
+    status: boolean;
+    message: string;
+    // Cập nhật kiểu dữ liệu ở đây
     data: ProductEntity[];
 }

@@ -10,13 +10,13 @@ export class LoggerProduct implements NestMiddleware {
             const { name, price, image, description, category, quantity } = req.query;
             //bắt lỗi
             //nếu không có name hoặc price hoặc image hoặc description hoặc category hoặc quantity thì trả về lỗi
-            if (!name || !price) {
-                return res.status(400).json({
-                    status: false,
-                    message: "Bad request",
-                    data: null,
-                });
-            }
+            // if (!name || !price) {
+            //     return res.status(400).json({
+            //         status: false,
+            //         message: "Bad request",
+            //         data: null,
+            //     });
+            // }
         }
         next();
     }

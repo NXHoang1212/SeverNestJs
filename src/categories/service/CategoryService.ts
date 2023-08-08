@@ -60,4 +60,48 @@ export class CategoryService {
             return reponseProduct;
         }
     }
+
+    //hàm cập nhật 
+    async update(id: string, request: AddCategoryRequest): Promise<AddCategoryRespon> {
+        try {
+            const { name } = request;
+            const result = await this.productModel.findByIdAndUpdate(id, {
+                name: name,
+            });
+            const reponseProduct: AddCategoryRespon = {
+                status: true,
+                message: "Update category success",
+                data: result,
+            };
+            return reponseProduct;
+        } catch (error: any) {
+            const reponseProduct: AddCategoryRespon = {
+                status: false,
+                message: "Update category fail",
+                data: null,
+            };
+            return reponseProduct;
+        }
+    }
+
+    //hàm xóa
+    async delete(id: string): Promise<AddCategoryRespon> {
+        try {
+            const result = await this.productModel.findByIdAndDelete(id);
+            const reponseProduct: AddCategoryRespon = {
+                status: true,
+                message: "Delete category success",
+                data: result,
+            };
+            return reponseProduct;
+        } catch (error: any) {
+            const reponseProduct: AddCategoryRespon = {
+                status: false,
+                message: "Delete category fail",
+                data: null,
+            };
+            return reponseProduct;
+        }
+    }
 }
+

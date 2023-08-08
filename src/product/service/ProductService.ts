@@ -12,9 +12,10 @@ import { DeleteProductRespon } from "../dto/res/DeleteResponProduct";
 
 @Injectable()
 export class ProductService {
+    ss
     constructor(@InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>) { }
-    //hàm get trả về một mảng các đối tượng ProductEntity
+    //hàm get trả về một mảng các đối tượng ProductEntity và lấy category 
     async get(queries: GetProductRequest): Promise<GetProductRespon> {
         try {
             const { name, price, image, description, category, quantity } = queries;
@@ -37,10 +38,11 @@ export class ProductService {
             if (quantity) {
                 query = { ...query, quantity: quantity };
             }
-            const result = await this.productModel.find(query);
+            const result = await this.productModel.find(query).populate('category', '_id name');
             const reponseProduct: GetProductRespon = {
                 status: true,
                 message: "Get product success",
+                //data là một mảng các đối tượng ProductEntity nên ta phải truyền vào một mảng
                 data: result,
             };
             return reponseProduct;
@@ -54,6 +56,7 @@ export class ProductService {
             return reponseProduct;
         }
     }
+
 
     //hàm create trả về một đối tượng ProductEntity
     async create(request: AddProductRequest, image: String): Promise<AddProductRespon> {
@@ -90,7 +93,7 @@ export class ProductService {
     //hàm detail trả về một đối tượng ProductEntity
     async detail(id: String): Promise<GetProductRespon> {
         try {
-            const product = await this.productModel.findById(id);
+            const product = await this.productModel.findById(id).populate('category', '_id name');
             if (!product) {
                 throw new Error("Product not found");
             }
@@ -98,7 +101,7 @@ export class ProductService {
                 status: true,
                 message: "Get product success",
                 //data là một mảng các đối tượng ProductEntity nên ta phải truyền vào một mảng
-                data: [product],
+                data: [product]
             };
             console.log("🚀 ~ file: ProductService.ts ~ line 101 ~ ProductService ~ detail ~ reponseProduct", reponseProduct)
             return reponseProduct;

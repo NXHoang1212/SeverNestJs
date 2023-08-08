@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { Category } from 'src/categories/model/CategoryModel';
 
 //là một interface đại diện cho một document trong database
 export type ProductDocument = Product & Document;
@@ -22,9 +23,9 @@ export class Product {
     image: string;
 
     //tham chiếu đến bảng category
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'category' })
-    category: string;
-
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
+    category: Category;
+    
     @Prop()
     quantity: number;
 }
