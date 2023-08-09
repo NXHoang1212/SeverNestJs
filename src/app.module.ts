@@ -15,7 +15,7 @@ import { AddressModule } from './address/module/AddRess.Module';
   imports:
     [
       ConfigModule.forRoot({ envFilePath: '.env', }),
-      MongooseModule.forRoot('mongodb+srv://admin:admin@cluster0.fah7pgm.mongodb.net/Nest?retryWrites=true&w=majority'),
+      MongooseModule.forRoot(process.env.MONGO_URI),
       //cho đường dẫn ảnh vào thư mục src/images ok
       MulterModule.register({ dest: './src/images' }),
       //gửi mail
