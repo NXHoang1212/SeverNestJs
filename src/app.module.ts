@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ProductModule } from './product/module/ProductModule';
+import { ProductModule } from './product/module/Product.Module';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/module/UserModule';
+import { UserModule } from './user/module/User.Module';
 import { MulterModule } from '@nestjs/platform-express'
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { CategoryModule } from './categories/module/CategoryModule';
+import { CategoryModule } from './categories/module/Category.Module';
+import { AddressModule } from './address/module/AddRess.Module';
 
 @Module({
   imports:
@@ -34,7 +35,7 @@ import { CategoryModule } from './categories/module/CategoryModule';
           },
         }),
       }),
-      ProductModule, UserModule, CategoryModule
+      ProductModule, UserModule, CategoryModule, AddressModule
     ],
   controllers: [AppController], //điều khiển các request
   providers: [AppService], // xử lý logic database crud
