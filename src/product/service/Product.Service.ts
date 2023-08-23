@@ -12,13 +12,12 @@ import { DeleteProductResponse } from "../dto/res/DeleteProduct.Response";
 
 @Injectable()
 export class ProductService {
-    ss
     constructor(@InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>) { }
     //hàm get trả về một mảng các đối tượng ProductEntity và lấy category 
     async get(queries: GetProductRequest): Promise<GetProductResponse> {
         try {
-            const { name, price, image, description, category, quantity } = queries;
+            const { name, price, image, description, category, size } = queries;
             let query = {};
             if (name) {
                 query = { ...query, name: name };
@@ -35,14 +34,13 @@ export class ProductService {
             if (category) {
                 query = { ...query, category: category };
             }
-            if (quantity) {
-                query = { ...query, quantity: quantity };
+            if (size) {
+                query = { ...query, size: size };
             }
-            const result = await this.productModel.find(query).populate('category', '_id name');
+            const result = await this.productModel.find(query).populate('category', '_id name').populate('size', '_id name price');
             const reponseProduct: GetProductResponse = {
                 status: true,
                 message: "Get product success",
-                //data là một mảng các đối tượng ProductEntity nên ta phải truyền vào một mảng
                 data: result,
             };
             return reponseProduct;
@@ -60,14 +58,14 @@ export class ProductService {
     //hàm create trả về một đối tượng ProductEntity
     async create(request: AddProductRequest, image: String): Promise<AddProductResponse> {
         try {
-            const { name, price, description, category, quantity } = request;
+            const { name, price, description, category, size } = request;
             const product = new this.productModel({
                 name: name,
                 price: price,
                 description: description,
                 image: image, // Sử dụng URL hình ảnh từ Cloudinary
                 category: category,
-                quantity: quantity,
+                size: size,
             });
             const result = await product.save();
             const responseProduct: AddProductResponse = {
@@ -116,7 +114,7 @@ export class ProductService {
 
     //hàm update trả về một đối tượng ProductEntity
     async update(id: String, request: UpdateProductRequest, image: String): Promise<UpdateProductResponse> {
-        let { name, price, description, category, quantity } = request;
+        let { name, price, description, category, size } = request;
         try {
             const product = await this.productModel.findByIdAndUpdate(id,
                 {
@@ -125,7 +123,7 @@ export class ProductService {
                     description: description,
                     image: image, // Sử dụng URL hình ảnh từ Cloudinary
                     category: category,
-                    quantity: quantity,
+                    size: size,
                 },
                 // new: true để trả về đối tượng sau khi update
                 { new: true }

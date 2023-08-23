@@ -10,13 +10,13 @@ import { GetCategoryRespon } from "../dto/res/GetCategory.Response";
 @Injectable()
 export class CategoryService {
     constructor(@InjectModel(Category.name)
-    private readonly productModel: Model<CategoryDocument>) { }
+    private readonly categoryModel: Model<CategoryDocument>) { }
 
     //thêm mới 1 category
     async create(request: AddCategoryRequest): Promise<AddCategoryRespon> {
         try {
             const { name } = request;
-            const newCategory = new this.productModel({
+            const newCategory = new this.categoryModel({
                 name: name,
             });
             const result = await newCategory.save();
@@ -44,7 +44,7 @@ export class CategoryService {
             if (name) {
                 query = { ...query, name: name };
             }
-            const result = await this.productModel.find(query);
+            const result = await this.categoryModel.find(query);
             const reponseProduct: GetCategoryRespon = {
                 status: true,
                 message: "Get category success",
@@ -65,7 +65,7 @@ export class CategoryService {
     async update(id: string, request: AddCategoryRequest): Promise<AddCategoryRespon> {
         try {
             const { name } = request;
-            const result = await this.productModel.findByIdAndUpdate(id, {
+            const result = await this.categoryModel.findByIdAndUpdate(id, {
                 name: name,
             });
             const reponseProduct: AddCategoryRespon = {
@@ -87,7 +87,7 @@ export class CategoryService {
     //hàm xóa
     async delete(id: string): Promise<AddCategoryRespon> {
         try {
-            const result = await this.productModel.findByIdAndDelete(id);
+            const result = await this.categoryModel.findByIdAndDelete(id);
             const reponseProduct: AddCategoryRespon = {
                 status: true,
                 message: "Delete category success",

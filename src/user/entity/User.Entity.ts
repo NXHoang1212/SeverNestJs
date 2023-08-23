@@ -4,15 +4,22 @@
 //entity là một class đại diện cho một bảng trong database
 
 export class UserEntity {
-    fullname: string;
+    googleId: string;
+    facebookId: string;
+    name: string;
+    holder: string;
     email: string;
-    password: string;
     avatar: string;
     mobile: string;
     gender: string;
-    nickname: string;
     birthday: string;
-    resetOTP: string;
-    // createdAt: Date;
-    // updatedAt: Date; 
 }
+
+
+
+// nickname: string;
+// fullname: string;
+// password: string;
+// resetOTP: string;
+// createdAt: Date;
+// updatedAt: Date; 

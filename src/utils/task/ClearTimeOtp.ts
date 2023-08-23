@@ -22,7 +22,7 @@ export class ClearExpiredOTPService {
         console.log("🚀 ~ file: ClearTimeOtp.ts ~ line 58 ~ ClearExpiredOTPService ~ clearExpiredOTP ~ usersWithExpiredOTP", usersWithExpiredOTP)
         // Xóa OTP của những user có OTP hết hạn nên chúng ta dùng vòng lặp để duyệt qua từng user
         for (const user of usersWithExpiredOTP) {
-            user.resetOTP = undefined;
+            // user.resetOTP = undefined;
             await user.save();
         }
     }

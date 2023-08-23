@@ -7,5 +7,5 @@ export class GetProductRequest {
     description: string;
     image: string;
     category: string;
-    quantity: number;
+    size: string;
 }  
