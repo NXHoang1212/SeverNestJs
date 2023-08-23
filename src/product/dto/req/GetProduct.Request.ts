@@ -1,5 +1,5 @@
 
-import { ProductEntity } from "../../entity/Product.Entity";
+
 
 export class GetProductRequest {
     name: string;
@@ -7,5 +7,6 @@ export class GetProductRequest {
     description: string;
     image: string;
     category: string;
-    size: string;
+    size: string[];
+    topping: string[];
 }  

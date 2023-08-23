@@ -37,7 +37,7 @@ export class ProductService {
             if (size) {
                 query = { ...query, size: size };
             }
-            const result = await this.productModel.find(query).populate('category', '_id name').populate('size', '_id name price');
+            const result = await this.productModel.find(query).populate('category', '_id name');
             const reponseProduct: GetProductResponse = {
                 status: true,
                 message: "Get product success",
@@ -58,7 +58,7 @@ export class ProductService {
     //hàm create trả về một đối tượng ProductEntity
     async create(request: AddProductRequest, image: String): Promise<AddProductResponse> {
         try {
-            const { name, price, description, category, size } = request;
+            const { name, price, description, category, size, topping } = request;
             const product = new this.productModel({
                 name: name,
                 price: price,
@@ -66,6 +66,7 @@ export class ProductService {
                 image: image, // Sử dụng URL hình ảnh từ Cloudinary
                 category: category,
                 size: size,
+                topping: topping
             });
             const result = await product.save();
             const responseProduct: AddProductResponse = {
@@ -73,7 +74,7 @@ export class ProductService {
                 message: "Create product success",
                 data: result,
             };
-            console.log("🚀 ~ file: ProductService.ts ~ line 80 ~ ProductService ~ create ~ responseProduct", responseProduct)
+            console.log("🚀 ~ file: ProductService.ts ~ line 80 ~ ProductService ~ create ~ responseProduct", responseProduct);
             return responseProduct;
         } catch (error: any) {
             console.log("Error while creating product:", error);
@@ -85,6 +86,7 @@ export class ProductService {
             return responseProduct;
         }
     }
+
 
     //hàm detail trả về một đối tượng ProductEntity
     async detail(id: String): Promise<GetProductResponse> {
@@ -113,38 +115,52 @@ export class ProductService {
     }
 
     //hàm update trả về một đối tượng ProductEntity
-    async update(id: String, request: UpdateProductRequest, image: String): Promise<UpdateProductResponse> {
-        let { name, price, description, category, size } = request;
+    async update(id: String, request: UpdateProductRequest, image: string): Promise<UpdateProductResponse> {
         try {
-            const product = await this.productModel.findByIdAndUpdate(id,
-                {
-                    name: name,
-                    price: price,
-                    description: description,
-                    image: image, // Sử dụng URL hình ảnh từ Cloudinary
-                    category: category,
-                    size: size,
-                },
-                // new: true để trả về đối tượng sau khi update
-                { new: true }
-            );
+            const { name, price, description, category, size, topping } = request;
+            const product = await this.productModel.findById(id);
             if (!product) {
                 throw new Error("Product not found");
             }
-            const reponseProduct: UpdateProductResponse = {
+            // Cập nhật mảng size bên trong mảng
+            if (Array.isArray(size) && size.length > 0) {
+                size.forEach((item, index) => {
+                    product.size[index] = {
+                        ...product.size[index],
+                        ...item
+                    };
+                });
+            }
+            // Cập nhật mảng topping bên trong mảng
+            if (Array.isArray(topping) && topping.length > 0) {
+                topping.forEach((item, index) => {
+                    product.topping[index] = {
+                        ...product.topping[index],
+                        ...item
+                    };
+                });
+            }
+            // Các trường khác vẫn được cập nhật như trước
+            product.name = name ? name : product.name;
+            product.price = price ? price : product.price;
+            product.description = description ? description : product.description;
+            product.image = image ? image : product.image;
+            product.category = category ? category : product.category;
+            const result = await product.save();
+            const responseProduct: UpdateProductResponse = {
                 status: true,
                 message: "Update product success",
-                data: product,
+                data: result,
             };
-            return reponseProduct;
+            return responseProduct;
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductService.ts ~ line 115 ~ ProductService ~ update ~ error", error)
-            const reponseProduct: UpdateProductResponse = {
+            console.log("Error:", error);
+            const responseProduct: UpdateProductResponse = {
                 status: false,
                 message: "Update product fail",
                 data: null,
             };
-            return reponseProduct;
+            return responseProduct;
         }
     }
 
