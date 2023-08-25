@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Res, HttpStatus, Query, UseInterceptors, UploadedFile, Req, Render } from "@nestjs/common";
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -8,17 +8,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  // url  localhost:3000/upload
-  // @Post('upload')
-  // @UseInterceptors(FileInterceptor('file'))
-  // uploadImage(@UploadedFile() file: Express.Multer.File) {
-  //   return this.appService.uploadImageToCloudinary(file);
-  // }
-
+  //url: localhost:3000/homepage
+  //render ra trang homepage
+  // @Get('homepage')
+  // @Render('web/HomePage')
+  // getHomePage() { }
 }

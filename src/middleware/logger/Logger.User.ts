@@ -6,9 +6,9 @@ import { Request, Response, NextFunction } from 'express';
 export class LoggerUser implements NestMiddleware {
     use(req: Request, res: Response, next: NextFunction) {
         if (req.path == '/api/users/login') {
-            const { mobile, googleId, facebookId } = req.body;
+            const { mobile, googleId, facebookId, email } = req.body;
             //nếu không có mobile hoặc googleId hoặc facebookId thì trả về lỗi
-            if (!mobile && !googleId && !facebookId) {
+            if (!mobile && !googleId && !facebookId && !email) {
                 return res.status(400).json({
                     status: false,
                     message: 'mobile hoặc googleId hoặc facebookId không được để trống',

@@ -45,7 +45,6 @@ export class UserController {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
-
 }
 
 

@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Res } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
@@ -6,10 +6,4 @@ export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
-  // async uploadImageToCloudinary(file: Express.Multer.File) {
-  //   return await this.cloudinary.uploadImage(file).catch(() => {
-  //     console.log('Invalid image file');
-  //     throw new BadRequestException('Invalid image file');
-  //   });
-  // }
 }

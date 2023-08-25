@@ -14,6 +14,7 @@ import { JwtService } from "@nestjs/jwt";
 import { MailerService } from '@nestjs-modules/mailer';
 import { GenerateOTP } from "src/utils/function/GenerateOTP";
 import { ClearExpiredOTPService } from "src/utils/task/ClearTimeOTP";
+import { admin } from "src/utils/function/AdminAccount";
 
 @Injectable()
 export class UserService {
@@ -21,6 +22,7 @@ export class UserService {
     private readonly userModel: Model<UserDocument>,
         private readonly jwtService: JwtService,
         private readonly mailerService: MailerService) { }
+    
     async login(request: LoginRequestUser): Promise<AllResponseUser> {
         try {
             let user;
@@ -117,7 +119,9 @@ export class UserService {
             return updateUserByIdRespon;
         }
     }
+
 }
+
 
 
 
