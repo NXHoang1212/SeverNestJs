@@ -5,8 +5,8 @@ import { Roles } from './roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
-
+  constructor(private reflector: Reflector) { }
+  //là dùng để kiểm tra xem user có quyền hay không nếu có thì trả về true còn không thì trả về false và báo lỗi
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get(Roles, context.getHandler());
     if (!roles) {

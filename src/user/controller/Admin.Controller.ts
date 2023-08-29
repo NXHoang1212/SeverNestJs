@@ -11,27 +11,63 @@ import { UserRoles } from "../model/User.Schema";
 import { RolesGuard } from "src/middleware/permission/Roles.Guard";
 
 @Controller('cpanel/admin')
-// @UseGuards(RolesGuard)
+@UseGuards(RolesGuard)
 export class AdminController {
     constructor(private readonly adminservice: AdminService) { }
+    //url: http://localhost:3000/cpanel/admin/login
     @Post('login')
     async login(@Body() body: LoginRequestUser, @Res() res: Response) {
         try {
-            const { email, password } = body;
-            if (email === 'admin@gmail.com' && password === '123456') {
-                return res.render('web/HomePage');
+            const user = await this.adminservice.loginadmin(body);
+            if (user.status) {
+                return res.redirect('/cpanel/admin/HomePage');
             } else {
-                throw new Error('Sai email hoặc mật khẩu');
+                return res.status(HttpStatus.BAD_REQUEST).json(user);
             }
         } catch (error) {
             console.log(error);
-            return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Sai email hoặc mật khẩu' });
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
     @Get('login')
-    @Render('web/Login') // Render trang đăng nhập
+    @Render('web/Login')
     renderLogin() {
-        return {}; // Truyền dữ liệu tùy ý cho trang đăng nhập
+        return {};
+    }
+    @Get('HomePage')
+    @Render('web/HomePage')
+    renderHomePage() {
+        return {};
+    }
+    @Get('Customer')
+    @Render('web/ManagerCustomer')
+    renderProduct() {
+        return {};
+    }
+    @Get('Product')
+    @Render('web/ManagerProducts')
+    renderCustomer() {
+        return {};
+    }
+    @Get('Order')
+    @Render('web/ManagerOrder')
+    renderOrder() {
+        return {};
+    }
+    @Get('Internal')
+    @Render('web/ManagerInternal')
+    renderInternal() {
+        return {};
+    }
+    @Get('Revenue')
+    @Render('web/ManagerRevenue')
+    renderRevenue() {
+        return {};
+    }
+    @Get('Statement')
+    @Render('web/ManagerStatement')
+    renderStatement() {
+        return {};
     }
 }
 
