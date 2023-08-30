@@ -34,21 +34,6 @@ export class AdminController {
     renderLogin() {
         return {};
     }
-    @Get('HomePage')
-    @Render('web/HomePage')
-    renderHomePage() {
-        return {};
-    }
-    @Get('Customer')
-    @Render('web/ManagerCustomer')
-    renderProduct() {
-        return {};
-    }
-    @Get('Product')
-    @Render('web/ManagerProducts')
-    renderCustomer() {
-        return {};
-    }
     @Get('Order')
     @Render('web/ManagerOrder')
     renderOrder() {
@@ -67,6 +52,35 @@ export class AdminController {
     @Get('Statement')
     @Render('web/ManagerStatement')
     renderStatement() {
+        return {};
+    }
+
+    @Get('ForgotPassword')
+    @Render('web/ForgotPasswordAdmin')
+    renderForgotPassword() {
+        return {};
+    }
+    @Get('AddOrder')
+    @Render('web/FormAddOrder')
+    renderAddOrder() {
+        return {};
+    }
+
+    @Get('AddInternal')
+    @Render('web/FormAddInternal')
+    renderAddInternal() {
+        return {};
+    }
+
+    @Get('AddCustomer')
+    @Render('web/FormAddStaft')
+    renderAddStaft() {
+        return {};
+    }
+
+    @Get('AddStatement')
+    @Render('web/FormStatement')
+    renderAddStatement() {
         return {};
     }
 }

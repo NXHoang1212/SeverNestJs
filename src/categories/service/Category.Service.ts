@@ -45,10 +45,33 @@ export class CategoryService {
                 query = { ...query, name: name };
             }
             const result = await this.categoryModel.find(query);
+            const data = result.map((item, index) => {
+                return { ...item.toJSON(), index: index + 1 };
+            });
             const reponseProduct: GetCategoryRespon = {
                 status: true,
                 message: "Get category success",
-                data: result,
+                data: data,
+            };
+            return reponseProduct;
+        } catch (error: any) {
+            const reponseProduct: GetCategoryRespon = {
+                status: false,
+                message: "Get category fail",
+                data: null,
+            };
+            return reponseProduct;
+        }
+    }
+
+    //lấy ra 1 category
+    async getOne(id: string): Promise<GetCategoryRespon> {
+        try {
+            const result = await this.categoryModel.findById(id);
+            const reponseProduct: GetCategoryRespon = {
+                status: true,
+                message: "Get category success",
+                data: [result],
             };
             return reponseProduct;
         } catch (error: any) {
