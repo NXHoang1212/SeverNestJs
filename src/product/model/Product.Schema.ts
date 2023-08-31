@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { Category } from 'src/categories/model/Category.Model';
+import { Category } from 'src/categories/model/Category.Schema';
 
 //là một interface đại diện cho một document trong database
 export type ProductDocument = Product & Document;

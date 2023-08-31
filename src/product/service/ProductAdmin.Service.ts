@@ -9,11 +9,14 @@ import { AddProductResponse } from "../dto/res/AddProduct.Response";
 import { UpdateProductRequest } from "../dto/req/UpdateProduct.Request";
 import { UpdateProductResponse } from "../dto/res/UpdateProduct.Response";
 import { DeleteProductResponse } from "../dto/res/DeleteProduct.Response";
+import { Category, CategoryDocument } from "src/categories/model/Category.Schema";
 
 @Injectable()
 export class ProductAdminService {
     constructor(@InjectModel(Product.name)
-    private readonly productModel: Model<ProductDocument>) { }
+    private readonly productModel: Model<ProductDocument>,) { }
+
+
     //hàm get trả về một mảng các đối tượng ProductEntity và lấy category 
     async get(queries: GetProductRequest): Promise<GetProductResponse> {
         try {
@@ -162,7 +165,7 @@ export class ProductAdminService {
             };
             return responseProduct;
         }
-    }6
+    } 6
 
     //hàm delete trả về một đối tượng ProductEntity
     async delete(id: String): Promise<DeleteProductResponse> {

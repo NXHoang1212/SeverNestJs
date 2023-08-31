@@ -6,16 +6,14 @@ import { UpdateProductRequest } from "../dto/req/UpdateProduct.Request";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { MulterConfig, CloudinaryUploader } from "src/middleware/upload/UploadMulter";
 import { ProductAdminService } from "../service/ProductAdmin.Service";
+import { CategoryService } from '../../categories/service/Category.Service';
 
 @Controller('cpanel/admin')
 export class ProductAdminController {
-    constructor(private readonly productAdminService: ProductAdminService) { }
+    constructor(private readonly productAdminService: ProductAdminService,
+        private readonly categoryService: CategoryService
+    ) { }
     //url: http://localhost:3000/cpanel/admin/HomePage
-    @Get('HomePage')
-    @Render('web/HomePage')
-    renderHomePage() {
-        return {};
-    }
     @Get('Customer')
     @Render('web/ManagerCustomer')
     renderProduct() {
@@ -29,21 +27,21 @@ export class ProductAdminController {
 
     @Get('AddProduct')
     @Render('web/FormAddProducts')
-    renderAddProduct() {
-        return {};
-    }
-
-    //url: localhost:3000/product
-    @Get()
-    async get(@Query() query: GetProductRequest, @Res() res: Response) {
+    async getCategories(@Query() query: any, @Res() res: Response) {
         try {
-            const response = await this.productAdminService.get(query);
-            console.log("🚀 ~ file: ProductController.ts:17 ~ ProductController ~ get ~ result:", response)
-            return res.status(HttpStatus.OK).json(response);
+            const response = await this.categoryService.get(query);
+            return { categories: response.data }
         } catch (error: any) {
             console.log("🚀 ~ file: ProductController.ts:19 ~ ProductController ~ get ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
+    }
+
+    //url: localhost:3000/product
+    @Get('HomePage')
+    @Render('web/HomePage')
+    renderHomePage() {
+        return {};
     }
     //url: localhost:3000/product/create
     @Post('create')
@@ -100,3 +98,13 @@ export class ProductAdminController {
 
 }
 
+// async get(@Query() query: GetProductRequest, @Res() res: Response) {
+//     try {
+//         const response = await this.productAdminService.get(query);
+//         console.log("🚀 ~ file: ProductController.ts:17 ~ ProductController ~ get ~ result:", response)
+//         return res.status(HttpStatus.OK).json(response);
+//     } catch (error: any) {
+//         console.log("🚀 ~ file: ProductController.ts:19 ~ ProductController ~ get ~ error", error)
+//         return res.status(HttpStatus.BAD_REQUEST).json(error);
+//     }
+// }

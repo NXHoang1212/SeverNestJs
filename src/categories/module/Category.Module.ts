@@ -1,6 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
-import { Category, CategorySchema } from '../model/Category.Model'
+import { Category, CategorySchema } from '../model/Category.Schema'
 import { CategoryController } from '../controller/Category.Controller'
 import { CategoryService } from '../service/Category.Service'
 import { LoggerCategory } from 'src/middleware/logger/Logger.Category'

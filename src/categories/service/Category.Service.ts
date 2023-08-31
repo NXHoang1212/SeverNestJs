@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Category, CategoryDocument } from "../model/Category.Model";
+import { Category, CategoryDocument } from "../model/Category.Schema";
 import { AddCategoryRequest } from "../dto/req/AddCatgory.Request";
 import { AddCategoryRespon } from "../dto/res/AddCategory.Response";
 import { GetCategoryRequest } from "../dto/req/GetCategory.Request";
