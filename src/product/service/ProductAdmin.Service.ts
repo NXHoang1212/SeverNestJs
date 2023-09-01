@@ -9,7 +9,7 @@ import { AddProductResponse } from "../dto/res/AddProduct.Response";
 import { UpdateProductRequest } from "../dto/req/UpdateProduct.Request";
 import { UpdateProductResponse } from "../dto/res/UpdateProduct.Response";
 import { DeleteProductResponse } from "../dto/res/DeleteProduct.Response";
-import { Category, CategoryDocument } from "src/categories/model/Category.Schema";
+import { CloudinaryUploader } from "src/middleware/upload/UploadMulter";
 
 @Injectable()
 export class ProductAdminService {
@@ -41,10 +41,13 @@ export class ProductAdminService {
                 query = { ...query, size: size };
             }
             const result = await this.productModel.find(query).populate('category', '_id name');
+            const data = result.map((item, index) => {
+                return { ...item.toJSON(), index: index + 1 };
+            });
             const reponseProduct: GetProductResponse = {
                 status: true,
                 message: "Get product success",
-                data: result,
+                data: data,
             };
             return reponseProduct;
         } catch (error: any) {
@@ -59,14 +62,15 @@ export class ProductAdminService {
     }
 
     //hàm create trả về một đối tượng ProductEntity
-    async create(request: AddProductRequest, image: String): Promise<AddProductResponse> {
+    async createWithImage(request: AddProductRequest, imageFile: Express.Multer.File): Promise<AddProductResponse> {
         try {
+            const uploadedImage = await CloudinaryUploader.upload(imageFile.path);
             const { name, price, description, category, size, topping } = request;
             const product = new this.productModel({
                 name: name,
                 price: price,
                 description: description,
-                image: image, // Sử dụng URL hình ảnh từ Cloudinary
+                image: uploadedImage.url, // Sử dụng URL hình ảnh từ Cloudinary
                 category: category,
                 size: size,
                 topping: topping
@@ -89,7 +93,6 @@ export class ProductAdminService {
             return responseProduct;
         }
     }
-
 
     //hàm detail trả về một đối tượng ProductEntity
     async detail(id: String): Promise<GetProductResponse> {
@@ -118,8 +121,9 @@ export class ProductAdminService {
     }
 
     //hàm update trả về một đối tượng ProductEntity
-    async update(id: String, request: UpdateProductRequest, image: string): Promise<UpdateProductResponse> {
+    async updateWithImage(id: string, request: UpdateProductRequest, imageFile: Express.Multer.File): Promise<UpdateProductResponse> {
         try {
+            const uploadedImage = await CloudinaryUploader.upload(imageFile.path);
             const { name, price, description, category, size, topping } = request;
             const product = await this.productModel.findById(id);
             if (!product) {
@@ -147,7 +151,7 @@ export class ProductAdminService {
             product.name = name ? name : product.name;
             product.price = price ? price : product.price;
             product.description = description ? description : product.description;
-            product.image = image ? image : product.image;
+            product.image = uploadedImage.url ? uploadedImage.url : product.image;
             product.category = category ? category : product.category;
             const result = await product.save();
             const responseProduct: UpdateProductResponse = {
@@ -165,7 +169,7 @@ export class ProductAdminService {
             };
             return responseProduct;
         }
-    } 6
+    }
 
     //hàm delete trả về một đối tượng ProductEntity
     async delete(id: String): Promise<DeleteProductResponse> {

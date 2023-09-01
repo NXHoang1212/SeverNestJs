@@ -33,4 +33,15 @@ export const MulterConfig = {
 };
 
 // Cấu hình CloudinaryUploader với folder cụ thể
-export const CloudinaryUploader = { upload: (path: string) => cloudinary.uploader.upload(path, { folder: 'product' }) };
+export const CloudinaryUploader = {
+    upload: async (path: string) => {
+        try {
+            const result = await cloudinary.uploader.upload(path, { folder: 'product' });
+            return result;
+        } catch (error) {
+            console.error("Cloudinary Error:", error);
+            throw error;
+        }
+    }
+};
+

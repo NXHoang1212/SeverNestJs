@@ -1,6 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
-import { ProductController } from '../controller/Product.Controller'
+import { ProductUserController } from '../controller/ProductUsers.Controller'
 import { ProductService } from '../service/Product.Service'
 import { Product, ProductSchema } from '../model/Product.Schema'
 import { LoggerProduct } from '../../middleware/logger/Logger.Product'
@@ -30,15 +30,15 @@ import { Category, CategorySchema } from 'src/categories/model/Category.Schema'
             ),
             CategoryModule
         ],
-    controllers: [ProductController, ProductAdminController],
+    controllers: [ProductUserController, ProductAdminController],
     providers: [ProductService, ProductAdminService, CategoryService],
 })
 
-//đây là module của product
+//đây là module của product dùng để gọi middleware logger
 export class ProductModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(LoggerProduct)
-            .forRoutes(ProductController)
+            .forRoutes(ProductUserController)
     }
 }
