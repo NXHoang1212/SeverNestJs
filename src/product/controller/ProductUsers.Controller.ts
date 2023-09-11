@@ -15,7 +15,7 @@ export class ProductUserController {
     async get(@Query() query: GetProductRequest, @Res() res: Response) {
         try {
             const response = await this.productService.get(query);
-            console.log("🚀 ~ file: ProductController.ts:17 ~ ProductController ~ get ~ result:", response)
+            // console.log("🚀 ~ file: ProductController.ts:17 ~ ProductController ~ get ~ result:", response)
             return res.status(HttpStatus.OK).json(response);
         } catch (error: any) {
             console.log("🚀 ~ file: ProductController.ts:19 ~ ProductController ~ get ~ error", error)

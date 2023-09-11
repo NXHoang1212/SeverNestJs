@@ -20,7 +20,7 @@ export class UserController {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
-
+    
     //url: http://localhost:3000/api/users/getUserById/:id
     @UseGuards(GrauthAuthen)
     @Get('getUserById/:id')
@@ -45,6 +45,7 @@ export class UserController {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
+
 }
 
 

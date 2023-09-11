@@ -7,14 +7,9 @@ import { LoginRequestUser } from "../dto/req/LoginUser.Request";
 import { AllResponseUser } from "../dto/res/AllUser.Response";
 import { UpdateUserByIdResponse } from "../dto/res/UpdateUser.Response";
 import { UpdateUserByIdRequest } from "../dto/req/UpdateUser.Request";
-import { ForgotPasswordRequest } from "../dto/req/Password.Request";
-import { ForgotPasswordRespon } from "../dto/res/Password.Response";
-import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 import { MailerService } from '@nestjs-modules/mailer';
-import { GenerateOTP } from "src/utils/function/GenerateOTP";
-import { ClearExpiredOTPService } from "src/utils/task/ClearTimeOTP";
-import { admin } from "src/utils/function/AdminAccount";
+import { app, auth } from "firebase-admin";
 
 @Injectable()
 export class UserService {
@@ -22,7 +17,6 @@ export class UserService {
     private readonly userModel: Model<UserDocument>,
         private readonly jwtService: JwtService,
         private readonly mailerService: MailerService) { }
-    
     async login(request: LoginRequestUser): Promise<AllResponseUser> {
         try {
             let user;
@@ -90,18 +84,19 @@ export class UserService {
     }
 
     //hàm update thông tin user
-    async updateUserById(id: String, request: UpdateUserByIdRequest): Promise<UpdateUserByIdResponse> {
+    async updateUserById(id: string, request: UpdateUserByIdRequest): Promise<UpdateUserByIdResponse> {
         try {
             const user = await this.userModel.findById(id)
             if (!user) {
                 throw new Error('Không tìm thấy user');
             }
-            const { name, holder, email, gender, birthday } = request;
+            const { name, holder, email, gender, birthday, avatar } = request;
             user.name = name ? name : user.name;
             user.holder = holder ? holder : user.holder;
             user.email = email ? email : user.email;
             user.gender = gender ? gender : user.gender;
             user.birthday = birthday ? birthday : user.birthday;
+            user.avatar = avatar ? avatar : user.avatar;
             await user.save();
             const updateUserByIdResponse: UpdateUserByIdResponse = {
                 status: true,

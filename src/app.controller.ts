@@ -7,6 +7,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 //để điều khiển các request
 @Controller()
 export class AppController {
+  getHello: any;
   constructor(private readonly appService: AppService) { }
   //url: localhost:3000/homepage
   //render ra trang homepage

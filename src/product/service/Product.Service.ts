@@ -17,7 +17,7 @@ export class ProductService {
     //hàm get trả về một mảng các đối tượng ProductEntity và lấy category 
     async get(queries: GetProductRequest): Promise<GetProductResponse> {
         try {
-            const { name, price, image, description, category, size } = queries;
+            const { name, price, image, category } = queries;
             let query = {};
             if (name) {
                 query = { ...query, name: name };
@@ -28,14 +28,8 @@ export class ProductService {
             if (image) {
                 query = { ...query, image: image };
             }
-            if (description) {
-                query = { ...query, description: description };
-            }
             if (category) {
                 query = { ...query, category: category };
-            }
-            if (size) {
-                query = { ...query, size: size };
             }
             const result = await this.productModel.find(query).populate('category', '_id name');
             const reponseProduct: GetProductResponse = {
