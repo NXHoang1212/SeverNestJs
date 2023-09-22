@@ -1,9 +1,9 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
-import { Category, CategorySchema } from '../model/Cart.Model'
-import { CategoryController } from '../controller/Cart.Controller'
-import { CategoryService } from '../service/Cart.Service'
-import { LoggerCategory } from 'src/middleware/logger/Logger.Category'
+import { Cart, CartSchema } from '../model/Cart.Model'
+import { CartController } from '../controller/Cart.Controller'
+import { CartSerivce } from '../service/Cart.Service'
+import { LoggerCart } from 'src/middleware/logger/Logger.Cart'
 
 
 
@@ -11,18 +11,18 @@ import { LoggerCategory } from 'src/middleware/logger/Logger.Category'
 @Module({
     imports:
         [
-            MongooseModule.forFeature([{ name: Category.name, schema: CategorySchema }]),
+            MongooseModule.forFeature([{ name: Cart.name, schema: CartSchema }]),
 
         ],
-    controllers: [CategoryController],
-    providers: [CategoryService],
+    controllers: [CartController],
+    providers: [CartSerivce],
 })
 
 //đây là module của product
-export class CategoryModule implements NestModule {
+export class CartModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
-            .apply(LoggerCategory)
-            .forRoutes(CategoryController)
+            .apply(LoggerCart)
+            .forRoutes(CartController)
     }
 }

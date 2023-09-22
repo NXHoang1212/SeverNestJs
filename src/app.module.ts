@@ -10,6 +10,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { CategoryModule } from './categories/module/Category.Module';
 import { AddressModule } from './address/module/AddRess.Module';
+import { CartModule } from './cart/module/Cart.Module';
+import { EventGateway } from './event/Even.gateway';
 
 @Module({
   imports:
@@ -35,9 +37,9 @@ import { AddressModule } from './address/module/AddRess.Module';
           },
         }),
       }),
-      ProductModule, UserModule, CategoryModule, AddressModule
+      ProductModule, UserModule, CategoryModule, AddressModule, CartModule
     ],
   controllers: [AppController], //điều khiển các request
-  providers: [AppService], // xử lý logic database crud
+  providers: [AppService, EventGateway], // xử lý logic database crud
 })
 export class AppModule { }

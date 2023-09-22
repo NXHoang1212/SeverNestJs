@@ -14,7 +14,7 @@ import { DeleteProductResponse } from "../dto/res/DeleteProduct.Response";
 export class ProductService {
     constructor(@InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>) { }
-    //hàm get trả về một mảng các đối tượng ProductEntity và lấy category 
+
     async get(queries: GetProductRequest): Promise<GetProductResponse> {
         try {
             const { name, price, image, category } = queries;

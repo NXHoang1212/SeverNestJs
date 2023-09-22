@@ -1,4 +1,5 @@
 //đây là model gửi đi
-import { CategoryEntity } from "src/categories/entity/Category.Entity";
+import { CartEntity } from "src/cart/entity/Cart.Entity";
 
-export class AddCategoryRequest extends CategoryEntity { }
+
+export class AddCartRequest extends CartEntity { }

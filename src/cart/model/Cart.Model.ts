@@ -2,16 +2,37 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-//là một interface đại diện cho một document trong database
-export type CategoryDocument = Category & Document;
 
-//Schema
-//là một class đại diện cho một bảng trong database
+export type CartDocument = Cart & Document;
+
+
 @Schema()
-export class Category {
+export class Cart {
+
     @Prop()
-    name: string;
+    NameProduct: string;
+
+    @Prop()
+    PriceProduct: number;
+
+    @Prop()
+    SizeProduct: string;
+
+    @Prop()
+    ToppingProduct: string;
+
+    @Prop()
+    QuantityProduct: number;
+
+    @Prop()
+    NoteProduct: string;
+
+    @Prop()
+    AmountShipping: number;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+    UserId: string;
 }
 
 
-export const CategorySchema = SchemaFactory.createForClass(Category);
+export const CartSchema = SchemaFactory.createForClass(Cart);

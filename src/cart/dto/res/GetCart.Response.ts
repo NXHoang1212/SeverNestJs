@@ -1,9 +1,9 @@
+import { CartEntity } from "src/cart/entity/Cart.Entity";
 
-import { CategoryEntity } from "src/categories/entity/Category.Entity";
 
 
-export class GetCategoryRespon {
+export class GetCartResponse {
     status: Boolean;
     message: String;
-    data: CategoryEntity[];
+    data: CartEntity[]
 }

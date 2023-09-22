@@ -1,6 +1,11 @@
 
-
 export class GetAddRessRequest {
+    userId: string;
     name: string;
-    // products: ProductEntity[];
+    DescribeAddRess: string;
+    Other: string;
+    Gate: string;
+    NoteOrther: string;
+    username: string;
+    phone: string;
 }
