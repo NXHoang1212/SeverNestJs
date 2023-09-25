@@ -5,7 +5,7 @@ import { AddCartRequest } from "../dto/req/AddCart.Request";
 import { GetCartRequest } from "../dto/req/GetCart.Request";
 
 
-@Controller('api/cart')
+@Controller('api/users/cart')
 export class CartController {
     constructor(private readonly cartService: CartSerivce) { }
 
