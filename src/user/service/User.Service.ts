@@ -90,13 +90,14 @@ export class UserService {
             if (!user) {
                 throw new Error('Không tìm thấy user');
             }
-            const { name, holder, email, gender, birthday, avatar } = request;
+            const { name, holder, email, gender, birthday, avatar, mobile } = request;
             user.name = name ? name : user.name;
             user.holder = holder ? holder : user.holder;
             user.email = email ? email : user.email;
             user.gender = gender ? gender : user.gender;
             user.birthday = birthday ? birthday : user.birthday;
             user.avatar = avatar ? avatar : user.avatar;
+            user.mobile = mobile ? mobile : user.mobile;
             await user.save();
             const updateUserByIdResponse: UpdateUserByIdResponse = {
                 status: true,

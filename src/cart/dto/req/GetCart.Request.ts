@@ -1,12 +1,15 @@
 
 
-export class GetCartRequest {
-    NameProduct: string;
-    PriceProduct: number;
-    SizeProduct: string;
-    ToppingProduct: string;
-    QuantityProduct: number;
-    NoteProduct: string;
-    AmountShipping: number;
+export class GetCartRequest {   
     UserId: string;
+    ProductId: [
+        {
+            NameProduct: string,
+            PriceProduct: number,
+            QuantityProduct: number,
+            ToppingProduct: string[],
+            SizeProduct: string[],
+            NoteProduct: string,
+        }
+    ]
 }

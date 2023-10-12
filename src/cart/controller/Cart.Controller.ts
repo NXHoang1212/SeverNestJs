@@ -19,8 +19,8 @@ export class CartController {
         }
     }
 
-    @Get('getCard/:id')
-    async getCartId(@Param('id') id: string, @Body() request: GetCartRequest, @Res() res: Response) {
+    @Get('getCart/:id')
+    async getCartId(@Param('id') id: string, @Res() res: Response) {
         try {
             const result = await this.cartService.getCartId(id);
             return res.status(HttpStatus.OK).json(result);
@@ -29,10 +29,20 @@ export class CartController {
         }
     }
 
-    @Post('UpdateCart/:id')
-    async updateCart(@Param('id') id: string, @Body() request: AddCartRequest, @Res() res: Response) {
+    @Get('detailCart/:id/:idProduct')
+    async getDetailCart(@Param('id') id: string, @Param('idProduct') idProduct: string, @Res() res: Response) {
         try {
-            const result = await this.cartService.updateCart(id, request);
+            const result = await this.cartService.getProductDetailInCart(id, idProduct);
+            return res.status(HttpStatus.OK).json(result);
+        } catch (error: any) {
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
+
+    @Post('update/:id/:idProduct')
+    async updateCart(@Param('id') id: string, @Param('idProduct') idProduct: string, @Body() request: AddCartRequest, @Res() res: Response) {
+        try {
+            const result = await this.cartService.updateProductInCart(id, idProduct, request);
             return res.status(HttpStatus.OK).json(result);
         } catch (error: any) {
             return res.status(HttpStatus.BAD_REQUEST).json(error);

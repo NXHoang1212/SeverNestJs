@@ -6,6 +6,7 @@ import { AddCartRequest } from "../dto/req/AddCart.Request";
 import { AddCartResponse } from "../dto/res/AddCart.Response";
 import { GetCartRequest } from "../dto/req/GetCart.Request";
 import { GetCartResponse } from "../dto/res/GetCart.Response";
+import { Types } from 'mongoose';
 
 @Injectable()
 export class CartSerivce {
@@ -14,96 +15,132 @@ export class CartSerivce {
 
     async createCart(request: AddCartRequest): Promise<AddCartResponse> {
         try {
-            const { NameProduct, PriceProduct, SizeProduct, ToppingProduct, QuantityProduct, NoteProduct, AmountShipping, UserId } = request;
-            const cart = new this.CartModel({
-                NameProduct: NameProduct,
-                PriceProduct: PriceProduct,
-                SizeProduct: SizeProduct,
-                ToppingProduct: ToppingProduct,
-                QuantityProduct: QuantityProduct,
-                NoteProduct: NoteProduct,
-                AmountShipping: AmountShipping,
-                UserId: UserId,
-            });
-            const result = await cart.save();
-            const responseCart: AddCartResponse = {
-                status: true,
-                message: "Create cart success",
-                data: result,
-            };
-            return responseCart;
+            const { UserId, ProductId } = request;
+            const existingCart = await this.CartModel.findOne({ UserId });
+            if (existingCart) {
+                if (!Array.isArray(existingCart.ProductId)) {
+                    existingCart.ProductId = [existingCart.ProductId];
+                }
+                ProductId.forEach(product => {
+                    existingCart.ProductId.push({
+                        _id: new Types.ObjectId(),
+                        ...product,
+                    });
+                });
+
+                const result = await existingCart.save();
+                const response: AddCartResponse = {
+                    status: true,
+                    message: "Add cart success",
+                    data: result,
+                };
+                return response;
+            } else {
+                const newCart = new this.CartModel({
+                    UserId: UserId, ProductId: ProductId.map(product => ({
+                        _id: new Types.ObjectId(),
+                        ...product,
+                    }))
+                });
+                const result = await newCart.save();
+                const response: AddCartResponse = {
+                    status: true,
+                    message: "Add cart success",
+                    data: result,
+                };
+                return response;
+            }
         } catch (error: any) {
-            console.log("🚀 ~ file: Cart.Service.ts ~ line 48 ~ CartSerivce ~ createCart ~ error", error)
-            const responseCart: AddCartResponse = {
+            const response: AddCartResponse = {
                 status: false,
-                message: "Create cart fail",
+                message: 'Add cart fail',
                 data: null,
             };
-            return responseCart;
+            return response;
         }
     }
 
     async getCartId(id: string): Promise<GetCartResponse> {
         try {
-            const result = await this.CartModel.find({ UserId: id })
-            const responseCart: GetCartResponse = {
+            const result = await this.CartModel.findOne({ UserId: id }).populate('UserId', '_id name mobile');
+            const response: GetCartResponse = {
                 status: true,
                 message: "Get cart success",
-                data: result,
+                data: [result],
             };
-            return responseCart;
+            return response;
         } catch (error: any) {
-            const responseCart: GetCartResponse = {
+            const response: GetCartResponse = {
                 status: false,
-                message: "Get cart fail",
+                message: 'Get cart fail',
                 data: null,
             };
-            return responseCart;
+            return response;
         }
     }
 
-    async updateCart(id: string, request: AddCartRequest): Promise<AddCartResponse> {
+    async getProductDetailInCart(userId: string, productId: string): Promise<GetCartResponse> {
         try {
-            const { NameProduct, PriceProduct, SizeProduct, ToppingProduct, QuantityProduct, NoteProduct, AmountShipping, UserId } = request;
-            const cart = new this.CartModel({
-                NameProduct: NameProduct,
-                PriceProduct: PriceProduct,
-                SizeProduct: SizeProduct,
-                ToppingProduct: ToppingProduct,
-                QuantityProduct: QuantityProduct,
-                NoteProduct: NoteProduct,
-                AmountShipping: AmountShipping,
-                UserId: UserId,
-            });
-            const result = this.CartModel.findByIdAndUpdate(id, cart);
-            const responseCart: AddCartResponse = {
+            const result = await this.CartModel.findOne({ UserId: userId });
+            if (!result) {
+                throw new Error("Cart not found");
+            }
+            const product = result.ProductId.find(product => product._id.toString() === productId);
+            if (!product) {
+                throw new Error("Product not found");
+            }
+            const response: GetCartResponse = {
+                status: true,
+                message: "Get product detail in cart success",
+                data: [{
+                    UserId: result.UserId,
+                    ProductId: [product],
+                }],
+            };
+            return response;
+        } catch (error: any) {
+            const response: GetCartResponse = {
+                status: false,
+                message: 'Get product detail in cart fail',
+                data: null,
+            };
+            return response;
+        }
+    }
+
+    async updateProductInCart(userId: string, productIdToUpdate: string, updatedProductInfo: any): Promise<AddCartResponse> {
+        try {
+            const cart = await this.CartModel.findOne({ UserId: userId });
+            if (!cart) {
+                throw new Error("Cart not found");
+            }
+            // Tìm sản phẩm cần cập nhật bằng productIdToUpdate
+            const productIndex = cart.ProductId.findIndex(product => product._id.toString() === productIdToUpdate);
+            if (productIndex === -1) {
+                throw new Error("Product not found");
+            }
+            const updatedProduct = {
+                _id: productIdToUpdate,
+                ...updatedProductInfo
+            };
+            cart.ProductId[productIndex] = updatedProduct;
+            const updatedCart = await cart.save();
+            const response: AddCartResponse = {
                 status: true,
                 message: "Update cart success",
-                data: result,
+                data: updatedCart,
             };
-            return responseCart;
+            return response;
         } catch (error: any) {
-
-        }
-    }
-
-    async deleteCart(id: string): Promise<AddCartResponse> {
-        try {
-            const result = await this.CartModel.findByIdAndDelete(id);
-            const responseCart: AddCartResponse = {
-                status: true,
-                message: "Delete cart success",
-                data: result,
-            };
-            return responseCart;
-        } catch (error: any) {
-            const responseCart: AddCartResponse = {
+            const response: AddCartResponse = {
                 status: false,
-                message: "Delete cart fail",
+                message: 'Update cart fail',
                 data: null,
             };
-            return responseCart;
+            return response;
         }
     }
+
+
 
 }

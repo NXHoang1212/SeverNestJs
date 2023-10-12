@@ -4,6 +4,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as Admin from 'firebase-admin';
 
+//đây là file chạy đầu tiên khi chạy ứng dụng declare là để sử dụng module.hot của webpack để hot reload
+declare const module: any;
+
 async function bootstrap() {
 
   Admin.initializeApp({
@@ -20,6 +23,10 @@ async function bootstrap() {
   app.setViewEngine('hbs');
   await app.listen(3000);
 
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 
 }
 bootstrap();

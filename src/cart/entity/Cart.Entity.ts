@@ -1,14 +1,16 @@
-
-
-
+import * as mongoose from 'mongoose';
 
 export class CartEntity {
-    NameProduct: string;
-    PriceProduct: number;
-    SizeProduct: string;
-    ToppingProduct: string;
-    QuantityProduct: number;
-    NoteProduct: string;
-    AmountShipping: number;
     UserId: string;
+    ProductId: [
+        {
+            _id: { type: mongoose.Schema.Types.ObjectId },
+            NameProduct: string,
+            PriceProduct: number,
+            QuantityProduct: number,
+            ToppingProduct: string[],
+            SizeProduct: string[],
+            NoteProduct: string,
+        }
+    ]
 }
