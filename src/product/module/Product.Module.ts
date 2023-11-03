@@ -11,11 +11,9 @@ import { CategoryService } from 'src/categories/service/Category.Service'
 import { Category, CategorySchema } from 'src/categories/model/Category.Schema'
 
 
-//đây là module của product
 @Module({
     imports:
         [
-            //import module của mongoose
             MongooseModule.forFeature(
                 [
                     {
@@ -34,11 +32,10 @@ import { Category, CategorySchema } from 'src/categories/model/Category.Schema'
     providers: [ProductService, ProductAdminService, CategoryService],
 })
 
-//đây là module của product dùng để gọi middleware logger
 export class ProductModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(LoggerProduct)
-            .forRoutes(ProductUserController)
+            .forRoutes(ProductUserController, ProductAdminController)
     }
 }

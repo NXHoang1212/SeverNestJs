@@ -7,7 +7,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { MulterConfig, CloudinaryUploader } from "src/middleware/upload/UploadMulter";
 import { ProductAdminService } from "../service/ProductAdmin.Service";
 import { CategoryService } from '../../categories/service/Category.Service';
-import { formatPrice } from "src/utils/function/FormatPrice";
+import { formatPrice } from "src/utils/FormatPrice";
 
 @Controller('cpanel/admin')
 export class ProductAdminController {
@@ -50,7 +50,6 @@ export class ProductAdminController {
             });
             return { data: response.data }
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductController.ts:19 ~ ProductController ~ get ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
@@ -67,7 +66,6 @@ export class ProductAdminController {
                 return res.status(HttpStatus.BAD_REQUEST).json(response);
             }
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductController.ts:29 ~ ProductController ~ create ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
@@ -81,7 +79,6 @@ export class ProductAdminController {
             let categories = await this.categoryService.get(query);
             return { data: response.data, categories: categories.data };
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductController.ts:29 ~ ProductController ~ create ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }

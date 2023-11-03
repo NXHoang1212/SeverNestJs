@@ -1,7 +1,8 @@
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import path, { extname } from 'path';
 import { BadRequestException } from '@nestjs/common';
 import { v2 as cloudinary } from 'cloudinary';
+import { v4 as uuidv4 } from 'uuid';
 
 // Cấu hình cloudinary
 cloudinary.config({
@@ -42,6 +43,27 @@ export const CloudinaryUploader = {
             console.error("Cloudinary Error:", error);
             throw error;
         }
-    }
+    },
+    uploadPromotion: async (path: string) => {
+        try {
+            const result = await cloudinary.uploader.upload(path, { folder: 'promotion' });
+            return result;
+        } catch (error) {
+            console.error("Cloudinary Error:", error);
+            throw error;
+        }
+    },
 };
 
+
+export const storage = {
+    storage: diskStorage({
+        destination: './src/images',
+        filename: (req, file, callback) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+            const ext = extname(file.originalname);
+            const filename = `${uniqueSuffix}${ext}`;
+            callback(null, filename);
+        },
+    }),
+}

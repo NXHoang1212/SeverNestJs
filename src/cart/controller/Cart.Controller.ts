@@ -38,11 +38,32 @@ export class CartController {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
-
+    
     @Post('update/:id/:idProduct')
     async updateCart(@Param('id') id: string, @Param('idProduct') idProduct: string, @Body() request: AddCartRequest, @Res() res: Response) {
         try {
             const result = await this.cartService.updateProductInCart(id, idProduct, request);
+            return res.status(HttpStatus.OK).json(result);
+        } catch (error: any) {
+            console.log(error);
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
+
+    @Delete('delete/:id/:idProduct')
+    async deleteCart(@Param('id') id: string, @Param('idProduct') idProduct: string, @Res() res: Response) {
+        try {
+            const result = await this.cartService.deleteProductInCart(id, idProduct);
+            return res.status(HttpStatus.OK).json(result);
+        } catch (error: any) {
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
+
+    @Delete('deleteAll/:id')
+    async deleteAllCart(@Param('id') id: string, @Res() res: Response) {
+        try {
+            const result = await this.cartService.deleteCart(id);
             return res.status(HttpStatus.OK).json(result);
         } catch (error: any) {
             return res.status(HttpStatus.BAD_REQUEST).json(error);

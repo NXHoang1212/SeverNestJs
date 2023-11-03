@@ -16,8 +16,6 @@ export class ProductAdminService {
     constructor(@InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,) { }
 
-
-    //hàm get trả về một mảng các đối tượng ProductEntity và lấy category 
     async get(queries: GetProductRequest): Promise<GetProductResponse> {
         try {
             const { name, price, image, description, category, size } = queries;

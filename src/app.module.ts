@@ -11,7 +11,10 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { CategoryModule } from './categories/module/Category.Module';
 import { AddressModule } from './address/module/AddRess.Module';
 import { CartModule } from './cart/module/Cart.Module';
-import { EventGateway } from './event/Even.gateway';
+import { EventGateway } from './event/Event.gateway';
+import { FavouritesModule } from './favourites/module/Favourites.module';
+import { PromotionModule } from './promotion/module/Promotion.Module';
+import { TaskModule } from './task/Task.Module';
 
 @Module({
   imports:
@@ -37,9 +40,9 @@ import { EventGateway } from './event/Even.gateway';
           },
         }),
       }),
-      ProductModule, UserModule, CategoryModule, AddressModule, CartModule
+      ProductModule, UserModule, CategoryModule, AddressModule, CartModule, FavouritesModule, PromotionModule, TaskModule
     ],
-  controllers: [AppController], //điều khiển các request
+  controllers: [AppController], //điều khiển các Request
   providers: [AppService, EventGateway], // xử lý logic database crud
 })
 export class AppModule { }

@@ -1,9 +1,9 @@
-import { Injectable, BadRequestException, Res } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  constructor() { }
-  getHello(): string {
-    return 'Hello World!';
+  private readonly logger = new Logger(AppService.name);
+  getHello() {
+    this.logger.log('Hello World!');
   }
 }

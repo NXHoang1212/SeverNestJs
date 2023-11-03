@@ -6,7 +6,7 @@ import { User, UserChema } from "../model/User.Schema";
 import { LoggerUser } from "src/middleware/logger/Logger.User";
 import { JwtModule } from "@nestjs/jwt";
 import { ScheduleModule } from "@nestjs/schedule";
-import { ClearExpiredOTPService } from "src/utils/task/ClearTimeOTP";
+import { ClearExpiredOTPService } from "src/utils/ClearTimeOTP";
 import { AdminController } from "../controller/Admin.Controller";
 import { AdminService } from "../service/Admin.Service";
 
@@ -25,6 +25,6 @@ export class UserModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(LoggerUser)
-            .forRoutes(UserController);
+            .forRoutes(UserController, AdminController);
     }
 }

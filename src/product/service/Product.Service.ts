@@ -39,7 +39,6 @@ export class ProductService {
             };
             return reponseProduct;
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductService.ts ~ line 48 ~ ProductService ~ get ~ error", error)
             const reponseProduct: GetProductResponse = {
                 status: false,
                 message: "Get product fail",
@@ -49,7 +48,6 @@ export class ProductService {
         }
     }
 
-    //hàm create trả về một đối tượng ProductEntity
     async create(request: AddProductRequest, image: String): Promise<AddProductResponse> {
         try {
             const { name, price, description, category, size, topping } = request;
@@ -81,8 +79,6 @@ export class ProductService {
         }
     }
 
-
-    //hàm detail trả về một đối tượng ProductEntity
     async detail(id: String): Promise<GetProductResponse> {
         try {
             const product = await this.productModel.findById(id).populate('category', '_id name');
@@ -92,10 +88,8 @@ export class ProductService {
             const reponseProduct: GetProductResponse = {
                 status: true,
                 message: "Get product success",
-                //data là một mảng các đối tượng ProductEntity nên ta phải truyền vào một mảng
                 data: [product]
             };
-            console.log("🚀 ~ file: ProductService.ts ~ line 101 ~ ProductService ~ detail ~ reponseProduct", reponseProduct)
             return reponseProduct;
         } catch (error: any) {
             console.log("🚀 ~ file: ProductService.ts ~ line 105 ~ ProductService ~ detail ~ error", error)
@@ -108,7 +102,6 @@ export class ProductService {
         }
     }
 
-    //hàm update trả về một đối tượng ProductEntity
     async update(id: String, request: UpdateProductRequest, image: string): Promise<UpdateProductResponse> {
         try {
             const { name, price, description, category, size, topping } = request;
@@ -116,7 +109,6 @@ export class ProductService {
             if (!product) {
                 throw new Error("Product not found");
             }
-            // Cập nhật mảng size bên trong mảng
             if (Array.isArray(size) && size.length > 0) {
                 size.forEach((item, index) => {
                     product.size[index] = {
@@ -125,7 +117,6 @@ export class ProductService {
                     };
                 });
             }
-            // Cập nhật mảng topping bên trong mảng
             if (Array.isArray(topping) && topping.length > 0) {
                 topping.forEach((item, index) => {
                     product.topping[index] = {
@@ -134,7 +125,6 @@ export class ProductService {
                     };
                 });
             }
-            // Các trường khác vẫn được cập nhật như trước
             product.name = name ? name : product.name;
             product.price = price ? price : product.price;
             product.description = description ? description : product.description;
@@ -158,7 +148,6 @@ export class ProductService {
         }
     }
 
-    //hàm delete trả về một đối tượng ProductEntity
     async delete(id: String): Promise<DeleteProductResponse> {
         try {
             const product = await this.productModel.findByIdAndDelete(id);

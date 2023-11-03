@@ -13,6 +13,7 @@ export class Cart {
     ProductId: [
         {
             _id: { type: mongoose.Schema.Types.ObjectId },
+            ProductId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
             NameProduct: string,
             PriceProduct: number,
             QuantityProduct: number,

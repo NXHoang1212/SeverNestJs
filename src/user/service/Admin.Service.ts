@@ -9,10 +9,10 @@ import { UpdateUserByIdRequest } from "../dto/req/UpdateUser.Request";
 import { ForgotPasswordRequest } from "../dto/req/Password.Request";
 import { ForgotPasswordRespon } from "../dto/res/Password.Response";
 import * as bcrypt from 'bcrypt';
-import { hashPassword } from "src/utils/function/HashPassword";
+import { hashPassword } from "src/utils/HashPassword";
 import { JwtService } from "@nestjs/jwt";
 import { MailerService } from '@nestjs-modules/mailer';
-import { admin } from "src/utils/function/AdminAccount";
+import { admin } from "src/utils/AdminAccount";
 
 @Injectable()
 export class AdminService {

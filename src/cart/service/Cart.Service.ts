@@ -62,7 +62,9 @@ export class CartSerivce {
 
     async getCartId(id: string): Promise<GetCartResponse> {
         try {
-            const result = await this.CartModel.findOne({ UserId: id }).populate('UserId', '_id name mobile');
+            const result = await this.CartModel.findOne({ UserId: id })
+                .populate('UserId', '_id name mobile')
+                .populate({ path: 'ProductId.ProductId', model: 'Product', });
             const response: GetCartResponse = {
                 status: true,
                 message: "Get cart success",
@@ -141,6 +143,54 @@ export class CartSerivce {
         }
     }
 
+    async deleteProductInCart(userId: string, productIdToDelete: string): Promise<AddCartResponse> {
+        try {
+            const cart = await this.CartModel.findOne({ UserId: userId });
+            if (!cart) {
+                throw new Error("Cart not found");
+            }
+            // Tìm sản phẩm cần xóa bằng productIdToDelete
+            const productIndex = cart.ProductId.findIndex(product => product._id.toString() === productIdToDelete);
+            if (productIndex === -1) {
+                throw new Error("Product not found");
+            }
+            cart.ProductId.splice(productIndex, 1);
+            const updatedCart = await cart.save();
+            const response: AddCartResponse = {
+                status: true,
+                message: "Delete cart success",
+                data: updatedCart,
+            };
+            return response;
+        } catch (error: any) {
+            const response: AddCartResponse = {
+                status: false,
+                message: 'Delete cart fail',
+                data: null,
+            };
+            return response;
+        }
+    }
 
-
+    async deleteCart(id: String): Promise<AddCartResponse> {
+        try {
+            const cart = await this.CartModel.findByIdAndDelete(id);
+            if (!cart) {
+                throw new Error("Cart not found");
+            };
+            const response: AddCartResponse = {
+                status: true,
+                message: "Delete cart success",
+                data: null,
+            };
+            return response;
+        } catch (error: any) {
+            const response: AddCartResponse = {
+                status: false,
+                message: 'Delete cart fail',
+                data: null,
+            };
+            return response;
+        }
+    }
 }

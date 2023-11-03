@@ -10,28 +10,23 @@ import { MulterConfig, CloudinaryUploader } from "src/middleware/upload/UploadMu
 @Controller('api/users/product')
 export class ProductUserController {
     constructor(private readonly productService: ProductService) { }
-    //url: localhost:3000/product
+
     @Get()
     async get(@Query() query: GetProductRequest, @Res() res: Response) {
         try {
             const response = await this.productService.get(query);
-            // console.log("🚀 ~ file: ProductController.ts:17 ~ ProductController ~ get ~ result:", response)
             return res.status(HttpStatus.OK).json(response);
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductController.ts:19 ~ ProductController ~ get ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
 
-    //url: localhost:3000/product/detail/:id
     @Get('detail/:id')
     async detail(@Param('id') id: String, @Res() res: Response) {
         try {
             const response = await this.productService.detail(id);
-            console.log("🚀 ~ file: ProductController.ts:17 ~ ProductController ~ get ~ result:", response)
             return res.status(HttpStatus.OK).json(response);
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductController.ts:29 ~ ProductController ~ create ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
