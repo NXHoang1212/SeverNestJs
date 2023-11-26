@@ -12,6 +12,7 @@ export class GetCartRequest {
             ToppingProduct: string[],
             SizeProduct: string[],
             NoteProduct: string,
+            StatusProduct: string,
         }
     ]
 }

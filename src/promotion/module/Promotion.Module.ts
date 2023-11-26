@@ -6,7 +6,6 @@ import { PromotionUserService } from '../service/Promotion.User.Service'
 import { LoggerPromotion } from 'src/middleware/logger/Logeer.Promotion'
 import { PromotionAdminController } from '../controller/Promotion.Admin.Controller'
 import { PromotionAdminService } from '../service/Promotion.Admin.Service'
-import { MulterModule } from '@nestjs/platform-express'
 
 @Module({
     imports:

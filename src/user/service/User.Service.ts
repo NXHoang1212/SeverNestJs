@@ -9,6 +9,7 @@ import { UpdateUserByIdResponse } from "../dto/res/UpdateUser.Response";
 import { UpdateUserByIdRequest } from "../dto/req/UpdateUser.Request";
 import { JwtService } from "@nestjs/jwt";
 import { MailerService } from '@nestjs-modules/mailer';
+import { CloudinaryUploader } from "src/middleware/upload/UploadMulter";
 import { app, auth } from "firebase-admin";
 
 @Injectable()
@@ -116,6 +117,32 @@ export class UserService {
         }
     }
 
+    //hàm upload avatar
+    async uploadAvatar(id: string, avatar: Express.Multer.File): Promise<UpdateUserByIdResponse> {
+        try {
+            const user = await this.userModel.findById(id)
+            if (!user) {
+                throw new Error('Không tìm thấy user');
+            }
+            const image = await CloudinaryUploader.uploadAvatar(avatar.path);
+            user.avatar = image.url;
+            await user.save();
+            const updateUserByIdResponse: UpdateUserByIdResponse = {
+                status: true,
+                message: 'Cập nhật avatar thành công',
+                data: user
+            }
+            return updateUserByIdResponse;
+        } catch (error: any) {
+            console.log("🚀 ~ file: UserService.ts:164 ~ UserService ~ uploadAvatar ~ error", error)
+            const updateUserByIdRespon: UpdateUserByIdResponse = {
+                status: false,
+                message: 'Cập nhật avatar thất bại',
+                data: null
+            }
+            return updateUserByIdRespon;
+        }
+    }
 }
 
 

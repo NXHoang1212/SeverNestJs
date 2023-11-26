@@ -57,14 +57,15 @@ export class PromotionAdminController {
         }
     }
 
-    // @Get('GetPromotion')
-    // async prmo(@Res() res: Response) {
-    //     try {
-    //         const response = await this.promotionadminService.getPromotion();
-    //         return res.status(HttpStatus.OK).json(response);
-    //     } catch (error: any) {
-    //         return res.status(HttpStatus.BAD_REQUEST).json(error);
-    //     }
-    // }
+    
+    @Delete('deletePromotionExpired')
+    async deletePromotionExpired(@Res() res: Response) {
+        try {
+            const response = await this.promotionadminService.deletePromotionExpired();
+            return res.status(HttpStatus.OK).json(response);
+        } catch (error: any) {
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
 }
 

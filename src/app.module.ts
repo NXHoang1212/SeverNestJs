@@ -15,6 +15,7 @@ import { EventGateway } from './event/Event.gateway';
 import { FavouritesModule } from './favourites/module/Favourites.module';
 import { PromotionModule } from './promotion/module/Promotion.Module';
 import { TaskModule } from './task/Task.Module';
+import { OrderModule } from './order/module/Order.Module';
 
 @Module({
   imports:
@@ -40,7 +41,7 @@ import { TaskModule } from './task/Task.Module';
           },
         }),
       }),
-      ProductModule, UserModule, CategoryModule, AddressModule, CartModule, FavouritesModule, PromotionModule, TaskModule
+      ProductModule, UserModule, CategoryModule, AddressModule, CartModule, FavouritesModule, PromotionModule, OrderModule, TaskModule
     ],
   controllers: [AppController], //điều khiển các Request
   providers: [AppService, EventGateway], // xử lý logic database crud

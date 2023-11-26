@@ -53,6 +53,16 @@ export const CloudinaryUploader = {
             throw error;
         }
     },
+    uploadAvatar: async (path: string) => {
+        try {
+            const result = await cloudinary.uploader.upload(path, { folder: 'avatarUser' });
+            return result;
+        } catch (error) {
+            console.error("Cloudinary Error:", error);
+            throw error;
+        }
+    
+    }
 };
 
 

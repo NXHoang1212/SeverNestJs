@@ -15,11 +15,14 @@ export class AddressService {
     ) { }
     async getAddress(id: string): Promise<GetAddressResponse> {
         try {
-            const result = await this.addRessModel.find({ userId: id }).populate('userId', '_id name mboile');
+            const result = await this.addRessModel.find({ userId: id });
+            if (!result) {
+                throw new Error("Get address fail");
+            }
             const reponseProduct: GetAddressResponse = {
                 status: true,
                 message: "Get address success",
-                data: result
+                data: result,
             };
             return reponseProduct;
         } catch (error: any) {

@@ -12,6 +12,7 @@ export class CartEntity {
             ToppingProduct: string[],
             SizeProduct: string[],
             NoteProduct: string,
+            StatusProduct: string,
         }
     ]
 }

@@ -11,9 +11,9 @@ export class PromotionUserService {
     constructor(@InjectModel(Promotion.name)
     private readonly promotionModel: Model<PromotionDocument>) { }
 
-    async getPromotion(id: string): Promise<PromotionResponse> {
+    async getPromotion(): Promise<PromotionResponse> {
         try {
-            const result = await this.promotionModel.findById(id);
+            const result = await this.promotionModel.find();
             const reponse: PromotionResponse = {
                 status: true,
                 message: 'Get Promotion Success',
@@ -27,7 +27,7 @@ export class PromotionUserService {
                 data: null
             }
             return reponse;
-        }
+        }   
     }
 }
 

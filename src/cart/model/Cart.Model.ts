@@ -20,6 +20,7 @@ export class Cart {
             ToppingProduct: string[],
             SizeProduct: string[],
             NoteProduct: string,
+            StatusProduct: string,
         }
     ]
 }

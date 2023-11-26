@@ -6,8 +6,16 @@ import { PromotionRequest } from "../dto/Promotion.Request";
 
 @Controller('api/users/discounts')
 export class PromotionUserController {
-    constructor(private readonly promotionuserService: PromotionUserService) { }
+    constructor(private readonly PromotionUserService: PromotionUserService) { }
 
-  
+    @Get('GetPromotion')
+    async getPromotion(@Res() res: Response) {
+        try {
+            const response = await this.PromotionUserService.getPromotion();
+            return res.status(HttpStatus.OK).json(response);
+        } catch (error: any) {
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
 }
 

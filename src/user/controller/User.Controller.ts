@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Body, Param, Res, HttpStatus, Query, UseGuards, Render } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Body, Param, Res, HttpStatus, Query, UseGuards, Render, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { Response, Request } from "express";
 import { RegisterRequestUser } from "../dto/req/RegisterUser.Request";
 import { UserService } from "../service/User.Service";
@@ -6,6 +6,8 @@ import { LoginRequestUser } from "../dto/req/LoginUser.Request";
 import { UpdateUserByIdRequest } from "../dto/req/UpdateUser.Request";
 import { GrauthAuthen } from "src/middleware/gaurd/Gaurd.Authen";
 import { ForgotPasswordRequest } from "../dto/req/Password.Request";
+import { MulterConfig } from "src/middleware/upload/UploadMulter";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller('api/users')
 export class UserController {
@@ -46,6 +48,18 @@ export class UserController {
         }
     }
 
+    @Post('upload-avatar/:id')
+    @UseInterceptors(FileInterceptor('avatar', MulterConfig))
+    async uploadAvatar(@Param('id') id: string, @UploadedFile() avatar: Express.Multer.File, @Res() res: Response) {
+        try {
+            const uploadAvatar = await this.userService.uploadAvatar(id, avatar);
+            return res.status(HttpStatus.OK).json(uploadAvatar);
+        } catch (error: any) {
+            console.log("🚀 ~ file: UserController.ts ~ line 69 ~ UserController ~ uploadAvatar ~ error", error)
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    
+    }
 }
 
 

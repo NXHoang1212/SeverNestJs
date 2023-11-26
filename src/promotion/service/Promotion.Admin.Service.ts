@@ -78,24 +78,22 @@ export class PromotionAdminService {
 
     async deletePromotionExpired(): Promise<PromotionResponse> {
         try {
-            const result = await this.promotionModel.find({ end: { $lt: new Date() } });
-            console.log("🚀 ~ file: Promotion.Admin.Service.ts:82 ~ PromotionAdminService ~ deletePromotionExpired ~ result:", result)
+            const result = await this.promotionModel.find({ end: new Date() });
             if (result.length > 0) {
                 result.forEach(async (element) => {
                     const id = element._id;
                     const deletePromotion = await this.deletePromotion(id);
-                    console.log("🚀 ~ file: Promotion.Admin.Service.ts:86 ~ PromotionAdminService ~ deletePromotionExpired ~ deletePromotion", deletePromotion)
                 });
                 const reponse: PromotionResponse = {
                     status: true,
-                    message: 'Delete Promotion Expired Success',
+                    message: 'Mã giảm giá đã hết hạn',
                     data: result
                 }
                 return reponse;
             } else {
                 const reponse: PromotionResponse = {
                     status: false,
-                    message: 'Delete Promotion Expired Fail',
+                    message: 'Mã giảm giá không hết hạn',
                     data: null
                 }
                 return reponse;
@@ -103,7 +101,7 @@ export class PromotionAdminService {
         } catch (error: any) {
             const reponse: PromotionResponse = {
                 status: false,
-                message: 'Delete Promotion Expired Fail',
+                message: 'Mã giảm giá không hết hạn',
                 data: null
             }
             return reponse;

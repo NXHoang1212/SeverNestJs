@@ -29,6 +29,17 @@ export class CartController {
         }
     }
 
+    @Post('updateStatus/:UserId')
+    async updateStatus(@Param('UserId') UserId: string, @Body() request: GetCartRequest, @Res() res: Response) {
+        try {
+            const result = await this.cartService.updateStatusProductInCart(UserId, request);
+            return res.status(HttpStatus.OK).json(result);
+        } catch (error: any) {
+            console.log(error);
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
+
     @Get('detailCart/:id/:idProduct')
     async getDetailCart(@Param('id') id: string, @Param('idProduct') idProduct: string, @Res() res: Response) {
         try {

@@ -34,11 +34,11 @@ export class AdminController {
     renderLogin() {
         return {};
     }
-    @Get('Order')
-    @Render('web/ManagerOrder')
-    renderOrder() {
-        return {};
-    }
+    // @Get('Order')
+    // @Render('web/ManagerOrder')
+    // renderOrder() {
+    //     return {};
+    // }
     @Get('Internal')
     @Render('web/ManagerInternal')
     renderInternal() {
