@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Delete, Body, Param, Res, HttpStatus, Query, Req, Render } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Res, HttpStatus, Put, Render, Req } from '@nestjs/common';
 import { Response, Request } from "express";
 import { OrderAdminService } from '../service/Order.Admin.Service';
-import { OrderRequest } from '../dto/Order.Request';
+import { OrderEntity } from '../entity/Order.Entity';
 
 
 @Controller('cpanel/admin')
@@ -10,19 +10,25 @@ export class OrderAdminController {
 
     @Get('Order')
     @Render('web/ManagerOrder')
-    async renderOrder(@Req() req: Request) {
+    async renderOrder(@Req() req: Request, @Res() res: Response) {
         const response = await this.orderAdminService.getOrderByStatus();
-        return { data: response.data, layout: 'web/ManagerOrder', };
+        const total = response.data.map((item) =>
+            item.OrderCart.reduce((acc, product) => acc + product.PriceProduct * product.QuantityProduct, 0)
+        );
+        const totalQuantity = response.data.map((item) =>
+            item.OrderCart.reduce((acc, product) => acc + product.QuantityProduct, 0)
+        );
+
+       return {
+            data: response.data,
+            total: total,
+            totalQuantity: totalQuantity,
+            layout: 'web/ManagerOrder',
+        };
+        // return {
+        //     data: orderWithTotals,
+        //     layout: 'web/ManagerOrder',
+        // };
     }
 
-    // @Get('Order/GetOrder')
-    // async getOrder(@Res() res: Response) {
-    //     try {
-    //         const response = await this.orderAdminService.getOrderByStatus();
-    //         return res.status(HttpStatus.OK).json(response);
-    //     } catch (error: any) {
-    //         return res.status(HttpStatus.BAD_REQUEST).json(error);
-    //     }
-    // }
 }
-

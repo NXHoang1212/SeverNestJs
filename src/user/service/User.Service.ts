@@ -34,10 +34,9 @@ export class UserService {
                     await user.save();
                 }
             } else {
-                const mobile = request.mobile.replace(/^\+84/, '0');
-                user = await this.userModel.findOne({ mobile });
+                user = await this.userModel.findOne({ mobile: request.mobile });
                 if (!user) {
-                    user = new this.userModel({ mobile });
+                    user = new this.userModel({ mobile: request.mobile });
                     await user.save();
                 }
             }

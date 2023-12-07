@@ -46,5 +46,15 @@ export class OrderUserController {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
+
+    @Put('confirm/:id')
+    async confirmOrder(@Param('id') id: string, @Body() body: OrderRequest, @Res() res: Response) {
+        try {
+            const response = await this.orderUserService.confirmPayment(id, body);
+            return res.status(HttpStatus.OK).json(response);
+        } catch (error: any) {
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
 }
 

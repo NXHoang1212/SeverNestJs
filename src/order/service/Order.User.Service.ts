@@ -104,5 +104,27 @@ export class OrderUserService {
             return response;
         }
     }
+
+    async confirmPayment(orderId: string, body: OrderRequest): Promise<OrderResponse> {
+        try {
+            const order = await this.orderModel.findById(orderId);
+            order.statusPayment = body.statusPayment;
+            order.status = body.status;
+            await order.save();
+            const response: OrderResponse = {
+                status: true,
+                message: 'Update Order Success',
+                data: order
+            }
+            return response;
+        } catch (error: any) {
+            const response: OrderResponse = {
+                status: false,
+                message: error.message,
+                data: null
+            }
+            return response;
+        }
+    }
 }
 

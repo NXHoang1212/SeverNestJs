@@ -11,10 +11,9 @@ export class OrderAdminService {
     constructor(@InjectModel(Order.name)
     private readonly orderModel: Model<OrderDocument>) { }
 
-    //get những đơn hàng có trạng thái đang Đang chờ thanh toán
     async getOrderByStatus(): Promise<OrderResponse> {
         try {
-            const order = await this.orderModel.find({ status: EnumAdmin.PENDING }).populate('user', 'name mobile')
+            const order = await this.orderModel.find({ status: { $in: [EnumAdmin.CONFIRM, EnumAdmin.CANCEL] } }).populate('user', 'name mobile');
             const response: OrderResponse = {
                 status: true,
                 message: 'Get Order Success',
@@ -24,10 +23,13 @@ export class OrderAdminService {
         } catch (error: any) {
             const response: OrderResponse = {
                 status: false,
-                message:error.message,
+                message: error.message,
                 data: null,
             };
+
             return response;
         }
     }
+
+    
 }

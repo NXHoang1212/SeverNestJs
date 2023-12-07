@@ -5,8 +5,8 @@ export class OrderEntity {
     OrderCart: [
         {
             NameProduct: string,
-            PriceProduct: number,  // Change this to number
-            QuantityProduct: number,  // Change this to number
+            PriceProduct: number,
+            QuantityProduct: number,
             ToppingProduct: string[],
             SizeProduct: string[],
             NoteProduct: string,

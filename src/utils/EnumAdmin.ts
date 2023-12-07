@@ -5,4 +5,5 @@ export enum EnumAdmin {
     SHIPPING = "Đang giao hàng",
     COMPLETED = "Đã hoàn thành",
     CANCEL = "Đã hủy",
+    CONFIRM = "Đã thanh toán",
 }
