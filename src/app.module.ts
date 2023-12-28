@@ -17,6 +17,7 @@ import { PromotionModule } from './promotion/module/Promotion.Module';
 import { TaskModule } from './task/Task.Module';
 import { OrderModule } from './order/module/Order.Module';
 import { NoticationModule } from './notication/module/Notication.Module';
+import { BannerModule } from './banner/module/Banner.Module';
 
 @Module({
   imports:
@@ -42,7 +43,9 @@ import { NoticationModule } from './notication/module/Notication.Module';
           },
         }),
       }),
-      ProductModule, UserModule, CategoryModule, AddressModule, CartModule, FavouritesModule, PromotionModule, OrderModule, NoticationModule, TaskModule
+      ProductModule, UserModule, CategoryModule, AddressModule, 
+      CartModule, FavouritesModule, PromotionModule, OrderModule, NoticationModule, TaskModule,
+      BannerModule
     ],
   controllers: [AppController], //điều khiển các Request
   providers: [AppService, EventGateway], // xử lý logic database crud

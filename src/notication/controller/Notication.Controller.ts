@@ -27,6 +27,14 @@ export class NoticationController {
         }
     }
 
-    
+    @Post('SendNotication')
+    async sendNotication(@Body() body: any, @Res() res: Response) {
+        try {
+            const response = await this.noticationService.sendNotificationFirebase(body);
+            return res.status(HttpStatus.OK).json(response);
+        } catch (error: any) {
+            return res.status(HttpStatus.BAD_REQUEST).json(error);
+        }
+    }
 }
 

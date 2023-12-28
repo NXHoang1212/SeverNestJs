@@ -61,15 +61,13 @@ export class NoticationService {
 
     async sendNotificationFirebase(request: any): Promise<NoticationResponse> {
         try {
-            const { token, title, body } = request;
-            const message = {
+            const response = await admin.messaging().send({
                 notification: {
-                    title: title,
-                    body: body
+                    title: request.title,
+                    body: request.body
                 },
-                token: token
-            }
-            const response = await admin.messaging().send(message);
+                topic: "all"
+            });
             const result: NoticationResponse = {
                 status: true,
                 message: "Send Notification Success",

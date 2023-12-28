@@ -110,6 +110,7 @@ export class OrderUserService {
             const order = await this.orderModel.findById(orderId);
             order.statusPayment = body.statusPayment;
             order.status = body.status;
+            order.date = body.date;
             await order.save();
             const response: OrderResponse = {
                 status: true,

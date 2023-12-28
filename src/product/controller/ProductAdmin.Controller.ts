@@ -9,46 +9,30 @@ import { ProductAdminService } from "../service/ProductAdmin.Service";
 import { CategoryService } from '../../categories/service/Category.Service';
 import { formatPrice } from "src/utils/FormatPrice";
 
-@Controller('cpanel/admin')
+@Controller('api/admin')
 export class ProductAdminController {
     constructor(private readonly productAdminService: ProductAdminService,
-        private readonly categoryService: CategoryService
-    ) { }
-    //url: http://localhost:3000/cpanel/admin/HomePage
-    @Get('HomePage')
-    @Render('web/HomePage')
-    renderHomePage() {
-        return {};
-    }
+        private readonly categoryService: CategoryService) { }
 
-    @Get('Customer')
-    @Render('web/ManagerCustomer')
-    renderCustomer() {
-        return {};
-    }
 
     @Get('AddProduct')
-    @Render('web/FormAddProducts')
     async getCategories(@Query() query: any, @Res() res: Response) {
         try {
             const response = await this.categoryService.get(query);
-            return { categories: response.data }
+            return res.status(HttpStatus.OK).json(response);
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductController.ts:19 ~ ProductController ~ get ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
 
-    //url: localhost:3000/product
     @Get('Product')
-    @Render('web/ManagerProducts')
     async get(@Query() query: GetProductRequest, @Res() res: Response) {
         try {
             const response = await this.productAdminService.get(query);
             response.data.forEach((product: any) => {
                 product.price = formatPrice(product.price);
             });
-            return { data: response.data }
+            return res.status(HttpStatus.OK).json(response);
         } catch (error: any) {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
@@ -60,42 +44,30 @@ export class ProductAdminController {
     async create(@Body() body: AddProductRequest, @UploadedFile() imageFile: Express.Multer.File, @Res() res: Response) {
         try {
             const response = await this.productAdminService.createWithImage(body, imageFile);
-            if (response.status) {
-                return res.redirect('/cpanel/admin/Product');
-            } else {
-                return res.status(HttpStatus.BAD_REQUEST).json(response);
-            }
+            return res.status(HttpStatus.OK).json(response);
         } catch (error: any) {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
 
-    //url: localhost:3000/product/detail/:id
     @Get('updateProduct/:id')
-    @Render('web/EditProducts')
     async detail(@Param('id') id: String, @Query() query: any, @Res() res: Response) {
         try {
             const response = await this.productAdminService.detail(id);
             let categories = await this.categoryService.get(query);
-            return { data: response.data, categories: categories.data };
+            return res.status(HttpStatus.OK).json({ data: response, categories: categories });
         } catch (error: any) {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
 
-    //url: localhost:3000/product/update/:id 
     @Post('updateProduct/:id')
     @UseInterceptors(FileInterceptor('image', MulterConfig))
     async update(@Param('id') id: string, @Body() body: UpdateProductRequest, @UploadedFile() file: Express.Multer.File, @Res() res: Response) {
         try {
             const response = await this.productAdminService.updateWithImage(id, body, file);
-            if (response.status) {
-                return res.redirect('/cpanel/admin/Product');
-            } else {
-                return res.status(HttpStatus.BAD_REQUEST).json(response);
-            }
+            return res.status(HttpStatus.OK).json(response);
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductController.ts:40 ~ ProductController ~ update ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }
@@ -107,7 +79,6 @@ export class ProductAdminController {
             const response = await this.productAdminService.delete(id);
             return res.status(HttpStatus.OK).json(response);
         } catch (error: any) {
-            console.log("🚀 ~ file: ProductController.ts:51 ~ ProductController ~ delete ~ error", error)
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
     }

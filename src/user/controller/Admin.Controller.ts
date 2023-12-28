@@ -10,7 +10,7 @@ import { Roles } from "src/middleware/permission/Roles.decorator";
 import { UserRoles } from "../model/User.Schema";
 import { RolesGuard } from "src/middleware/permission/Roles.Guard";
 
-@Controller('cpanel/admin')
+@Controller('api/admin')
 @UseGuards(RolesGuard)
 export class AdminController {
     constructor(private readonly adminservice: AdminService) { }
@@ -19,11 +19,7 @@ export class AdminController {
     async login(@Body() body: LoginRequestUser, @Res() res: Response) {
         try {
             const user = await this.adminservice.loginadmin(body);
-            if (user.status) {
-                return res.redirect('/cpanel/admin/HomePage');
-            } else {
-                return res.status(HttpStatus.BAD_REQUEST).json(user);
-            }
+            return res.status(HttpStatus.OK).json(user);
         } catch (error) {
             console.log(error);
             return res.status(HttpStatus.BAD_REQUEST).json(error);

@@ -31,7 +31,7 @@ export class ProductService {
             if (category) {
                 query = { ...query, category: category };
             }
-            const result = await this.productModel.find(query).populate('category', '_id name');
+            const result = await this.productModel.find(query).populate('category', '_id name image');
             const reponseProduct: GetProductResponse = {
                 status: true,
                 message: "Get product success",
@@ -81,7 +81,7 @@ export class ProductService {
 
     async detail(id: String): Promise<GetProductResponse> {
         try {
-            const product = await this.productModel.findById(id).populate('category', '_id name');
+            const product = await this.productModel.findById(id).populate('category', '_id name image');
             if (!product) {
                 throw new Error("Product not found");
             }

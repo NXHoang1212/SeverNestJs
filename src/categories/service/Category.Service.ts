@@ -6,18 +6,19 @@ import { AddCategoryRequest } from "../dto/req/AddCatgory.Request";
 import { AddCategoryRespon } from "../dto/res/AddCategory.Response";
 import { GetCategoryRequest } from "../dto/req/GetCategory.Request";
 import { GetCategoryRespon } from "../dto/res/GetCategory.Response";
+import { CloudinaryUploader } from "src/middleware/upload/UploadMulter";
 
 @Injectable()
 export class CategoryService {
     constructor(@InjectModel(Category.name)
     private readonly categoryModel: Model<CategoryDocument>) { }
 
-    //thêm mới 1 category
     async create(request: AddCategoryRequest): Promise<AddCategoryRespon> {
         try {
-            const { name } = request;
+            const { name, image } = request;
             const newCategory = new this.categoryModel({
                 name: name,
+                image: image,
             });
             const result = await newCategory.save();
             const reponseProduct: AddCategoryRespon = {
@@ -29,20 +30,22 @@ export class CategoryService {
         } catch (error: any) {
             const reponseProduct: AddCategoryRespon = {
                 status: false,
-                message: 'Add category fail',
+                message: error.message,
                 data: null,
             };
             return reponseProduct;
         }
     }
 
-    //lấy ra tất cả category
     async get(queries: GetCategoryRequest): Promise<GetCategoryRespon> {
         try {
-            const { name } = queries;
+            const { name, image } = queries;
             let query = {};
             if (name) {
                 query = { ...query, name: name };
+            }
+            if (image) {
+                query = { ...query, image: image };
             }
             const result = await this.categoryModel.find(query);
             const data = result.map((item, index) => {
@@ -57,14 +60,13 @@ export class CategoryService {
         } catch (error: any) {
             const reponseProduct: GetCategoryRespon = {
                 status: false,
-                message: "Get category fail",
+                message: error.message,
                 data: null,
             };
             return reponseProduct;
         }
     }
 
-    //lấy ra 1 category
     async getOne(id: string): Promise<GetCategoryRespon> {
         try {
             const result = await this.categoryModel.findById(id);
@@ -77,37 +79,49 @@ export class CategoryService {
         } catch (error: any) {
             const reponseProduct: GetCategoryRespon = {
                 status: false,
-                message: "Get category fail",
+                message: error.message,
                 data: null,
             };
             return reponseProduct;
         }
     }
 
-    //hàm cập nhật 
-    async update(id: string, request: AddCategoryRequest): Promise<AddCategoryRespon> {
+    async update(id: string, request: AddCategoryRequest, imageFile?: Express.Multer.File): Promise<AddCategoryRespon> {
         try {
+            const uploadedImage = await CloudinaryUploader.uploadCategory(imageFile.path);
             const { name } = request;
-            const result = await this.categoryModel.findByIdAndUpdate(id, {
-                name: name,
-            });
-            const reponseProduct: AddCategoryRespon = {
-                status: true,
-                message: "Update category success",
-                data: result,
-            };
-            return reponseProduct;
+            if (uploadedImage) {
+                const result = await this.categoryModel.findByIdAndUpdate(id, {
+                    name: name,
+                    image: uploadedImage.url,
+                });
+                const reponseProduct: AddCategoryRespon = {
+                    status: true,
+                    message: "Update category success",
+                    data: result,
+                };
+                return reponseProduct;
+            } else {
+                const result = await this.categoryModel.findByIdAndUpdate(id, {
+                    name: name,
+                });
+                const reponseProduct: AddCategoryRespon = {
+                    status: true,
+                    message: "Update category success",
+                    data: result,
+                };
+                return reponseProduct;
+            }
         } catch (error: any) {
             const reponseProduct: AddCategoryRespon = {
                 status: false,
-                message: "Update category fail",
+                message: error.message,
                 data: null,
             };
             return reponseProduct;
         }
     }
 
-    //hàm xóa
     async delete(id: string): Promise<AddCategoryRespon> {
         try {
             const result = await this.categoryModel.findByIdAndDelete(id);
@@ -120,7 +134,7 @@ export class CategoryService {
         } catch (error: any) {
             const reponseProduct: AddCategoryRespon = {
                 status: false,
-                message: "Delete category fail",
+                message: error.message,
                 data: null,
             };
             return reponseProduct;

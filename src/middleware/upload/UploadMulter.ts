@@ -40,8 +40,7 @@ export const CloudinaryUploader = {
             const result = await cloudinary.uploader.upload(path, { folder: 'product' });
             return result;
         } catch (error) {
-            console.error("Cloudinary Error:", error);
-            throw error;
+            return error.message;
         }
     },
     uploadPromotion: async (path: string) => {
@@ -49,8 +48,7 @@ export const CloudinaryUploader = {
             const result = await cloudinary.uploader.upload(path, { folder: 'promotion' });
             return result;
         } catch (error) {
-            console.error("Cloudinary Error:", error);
-            throw error;
+            return error.message;
         }
     },
     uploadAvatar: async (path: string) => {
@@ -58,10 +56,24 @@ export const CloudinaryUploader = {
             const result = await cloudinary.uploader.upload(path, { folder: 'avatarUser' });
             return result;
         } catch (error) {
-            console.error("Cloudinary Error:", error);
-            throw error;
+            return error.message;
         }
-    
+    },
+    uploadCategory: async (path: string) => {
+        try {
+            const result = await cloudinary.uploader.upload(path, { folder: 'category' });
+            return result;
+        } catch (error) {
+            return error.message;
+        }
+    },
+    uploadBanner: async (path: string) => {
+        try {
+            const result = await cloudinary.uploader.upload(path, { folder: 'banner' });
+            return result;
+        } catch (error) {
+            return error.message;
+        }
     }
 };
 
