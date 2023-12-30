@@ -1,3 +1,3 @@
-import { CategoryEntity } from "src/categories/entity/Category.Entity";
+import { CategoryEntity } from 'src/categories/entity/Category.Entity';
 
-export class AddCategoryRequest extends CategoryEntity { }
+export class AddCategoryRequest extends CategoryEntity {}

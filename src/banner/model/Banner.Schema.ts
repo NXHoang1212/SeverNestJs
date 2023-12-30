@@ -6,19 +6,17 @@ export type BannerDocument = Banner & Document;
 
 @Schema()
 export class Banner {
+  @Prop()
+  name: string;
 
-    @Prop()
-    name: string;
+  @Prop()
+  image: string;
 
-    @Prop()
-    image: string;
+  @Prop({ type: Date, default: Date.now })
+  createdAt: Date;
 
-    @Prop({ type: Date, default: Date.now })
-    createdAt: Date;
-
-    @Prop({ type: Date, default: Date.now })
-    updatedAt: Date;
+  @Prop({ type: Date, default: Date.now })
+  updatedAt: Date;
 }
-
 
 export const BannerSchema = SchemaFactory.createForClass(Banner);

@@ -1,7 +1,5 @@
-
-
 export class NoticationResponse {
-    status: boolean;
-    message: string;
-    data: any;
+  status: boolean;
+  message: string;
+  data: any;
 }

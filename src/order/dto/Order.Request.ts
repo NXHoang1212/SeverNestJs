@@ -1,4 +1,3 @@
+import { OrderEntity } from '../entity/Order.Entity';
 
-import { OrderEntity } from "../entity/Order.Entity";
-
-export class OrderRequest extends OrderEntity { }
+export class OrderRequest extends OrderEntity {}

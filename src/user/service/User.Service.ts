@@ -1,152 +1,168 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model, set } from "mongoose";
-import { User, UserDocument } from "../model/User.Schema";
-import { RegisterRequestUser } from "../dto/req/RegisterUser.Request";
-import { LoginRequestUser } from "../dto/req/LoginUser.Request";
-import { AllResponseUser } from "../dto/res/AllUser.Response";
-import { UpdateUserByIdResponse } from "../dto/res/UpdateUser.Response";
-import { UpdateUserByIdRequest } from "../dto/req/UpdateUser.Request";
-import { JwtService } from "@nestjs/jwt";
+import { Inject, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, set } from 'mongoose';
+import { User, UserDocument } from '../model/User.Schema';
+import { RegisterRequestUser } from '../dto/req/RegisterUser.Request';
+import { LoginRequestUser } from '../dto/req/LoginUser.Request';
+import { AllResponseUser } from '../dto/res/AllUser.Response';
+import { UpdateUserByIdResponse } from '../dto/res/UpdateUser.Response';
+import { UpdateUserByIdRequest } from '../dto/req/UpdateUser.Request';
+import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nestjs-modules/mailer';
-import { CloudinaryUploader } from "src/middleware/upload/UploadMulter";
-import { app, auth } from "firebase-admin";
+import { CloudinaryUploader } from 'src/middleware/upload/UploadMulter';
+import { app, auth } from 'firebase-admin';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name)
+  constructor(
+    @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
-        private readonly jwtService: JwtService,
-        private readonly mailerService: MailerService) { }
-    async login(request: LoginRequestUser): Promise<AllResponseUser> {
-        try {
-            let user;
-            if (request.facebookId) {
-                user = await this.userModel.findOne({ facebookId: request.facebookId });
-                if (!user) {
-                    user = new this.userModel({ facebookId: request.facebookId });
-                    await user.save();
-                }
-            } else if (request.googleId) {
-                user = await this.userModel.findOne({ googleId: request.googleId });
-                if (!user) {
-                    user = new this.userModel({ googleId: request.googleId });
-                    await user.save();
-                }
-            } else {
-                user = await this.userModel.findOne({ mobile: request.mobile });
-                if (!user) {
-                    user = new this.userModel({ mobile: request.mobile });
-                    await user.save();
-                }
-            }
-            const payload = { id: user._id };
-            const token = await this.jwtService.sign(payload);
-            const allResponUser: AllResponseUser = {
-                status: true,
-                message: 'Đăng nhập thành công',
-                data: { token, user }
-            };
-            return allResponUser;
-        } catch (error: any) {
-            console.log("🚀 ~ file: UserService.ts:75 ~ UserService ~ login ~ error:", error)
-            const allResponUser: AllResponseUser = {
-                status: false,
-                message: 'Đăng nhập thất bại',
-                data: null
-            };
-            return allResponUser;
+    private readonly jwtService: JwtService,
+    private readonly mailerService: MailerService,
+  ) {}
+  async login(request: LoginRequestUser): Promise<AllResponseUser> {
+    try {
+      let user;
+      if (request.facebookId) {
+        user = await this.userModel.findOne({ facebookId: request.facebookId });
+        if (!user) {
+          user = new this.userModel({ facebookId: request.facebookId });
+          await user.save();
         }
+      } else if (request.googleId) {
+        user = await this.userModel.findOne({ googleId: request.googleId });
+        if (!user) {
+          user = new this.userModel({ googleId: request.googleId });
+          await user.save();
+        }
+      } else {
+        user = await this.userModel.findOne({ mobile: request.mobile });
+        if (!user) {
+          user = new this.userModel({ mobile: request.mobile });
+          await user.save();
+        }
+      }
+      const payload = { id: user._id };
+      const token = await this.jwtService.sign(payload);
+      const allResponUser: AllResponseUser = {
+        status: true,
+        message: 'Đăng nhập thành công',
+        data: { token, user },
+      };
+      return allResponUser;
+    } catch (error: any) {
+      console.log(
+        '🚀 ~ file: UserService.ts:75 ~ UserService ~ login ~ error:',
+        error,
+      );
+      const allResponUser: AllResponseUser = {
+        status: false,
+        message: 'Đăng nhập thất bại',
+        data: null,
+      };
+      return allResponUser;
     }
+  }
 
-    //hàm lấy thông tin id user
-    async getUserById(id: String): Promise<AllResponseUser> {
-        try {
-            const user = await this.userModel.findById(id);
-            if (!user) {
-                throw new Error('Không tìm thấy user');
-            }
-            const allResponUser: AllResponseUser = {
-                status: true,
-                message: 'Lấy thông tin user thành công',
-                data: user
-            };
-            return allResponUser;
-        } catch (error: any) {
-            console.log("🚀 ~ file: UserService.ts:103 ~ UserService ~ getUserById ~ error", error)
-            const allResponUser: AllResponseUser = {
-                status: false,
-                message: 'Lấy thông tin user thất bại',
-                data: null
-            };
-            return allResponUser;
-        }
+  //hàm lấy thông tin id user
+  async getUserById(id: string): Promise<AllResponseUser> {
+    try {
+      const user = await this.userModel.findById(id);
+      if (!user) {
+        throw new Error('Không tìm thấy user');
+      }
+      const allResponUser: AllResponseUser = {
+        status: true,
+        message: 'Lấy thông tin user thành công',
+        data: user,
+      };
+      return allResponUser;
+    } catch (error: any) {
+      console.log(
+        '🚀 ~ file: UserService.ts:103 ~ UserService ~ getUserById ~ error',
+        error,
+      );
+      const allResponUser: AllResponseUser = {
+        status: false,
+        message: 'Lấy thông tin user thất bại',
+        data: null,
+      };
+      return allResponUser;
     }
+  }
 
-    //hàm update thông tin user
-    async updateUserById(id: string, request: UpdateUserByIdRequest): Promise<UpdateUserByIdResponse> {
-        try {
-            const user = await this.userModel.findById(id)
-            if (!user) {
-                throw new Error('Không tìm thấy user');
-            }
-            const { name, holder, email, gender, birthday, avatar, mobile } = request;
-            user.name = name ? name : user.name;
-            user.holder = holder ? holder : user.holder;
-            user.email = email ? email : user.email;
-            user.gender = gender ? gender : user.gender;
-            user.birthday = birthday ? birthday : user.birthday;
-            user.avatar = avatar ? avatar : user.avatar;
-            user.mobile = mobile ? mobile : user.mobile;
-            await user.save();
-            const updateUserByIdResponse: UpdateUserByIdResponse = {
-                status: true,
-                message: 'Cập nhật thông tin user thành công',
-                data: user
-            }
-            return updateUserByIdResponse;
-        } catch (error: any) {
-            console.log("🚀 ~ file: UserService.ts:133 ~ UserService ~ updateUserById ~ error", error)
-            const updateUserByIdRespon: UpdateUserByIdResponse = {
-                status: false,
-                message: 'Cập nhật thông tin user thất bại',
-                data: null
-            }
-            return updateUserByIdRespon;
-        }
+  //hàm update thông tin user
+  async updateUserById(
+    id: string,
+    request: UpdateUserByIdRequest,
+  ): Promise<UpdateUserByIdResponse> {
+    try {
+      const user = await this.userModel.findById(id);
+      if (!user) {
+        throw new Error('Không tìm thấy user');
+      }
+      const { name, holder, email, gender, birthday, avatar, mobile } = request;
+      user.name = name ? name : user.name;
+      user.holder = holder ? holder : user.holder;
+      user.email = email ? email : user.email;
+      user.gender = gender ? gender : user.gender;
+      user.birthday = birthday ? birthday : user.birthday;
+      user.avatar = avatar ? avatar : user.avatar;
+      user.mobile = mobile ? mobile : user.mobile;
+      await user.save();
+      const updateUserByIdResponse: UpdateUserByIdResponse = {
+        status: true,
+        message: 'Cập nhật thông tin user thành công',
+        data: user,
+      };
+      return updateUserByIdResponse;
+    } catch (error: any) {
+      console.log(
+        '🚀 ~ file: UserService.ts:133 ~ UserService ~ updateUserById ~ error',
+        error,
+      );
+      const updateUserByIdRespon: UpdateUserByIdResponse = {
+        status: false,
+        message: 'Cập nhật thông tin user thất bại',
+        data: null,
+      };
+      return updateUserByIdRespon;
     }
+  }
 
-    //hàm upload avatar
-    async uploadAvatar(id: string, avatar: Express.Multer.File): Promise<UpdateUserByIdResponse> {
-        try {
-            const user = await this.userModel.findById(id)
-            if (!user) {
-                throw new Error('Không tìm thấy user');
-            }
-            const image = await CloudinaryUploader.uploadAvatar(avatar.path);
-            user.avatar = image.url;
-            await user.save();
-            const updateUserByIdResponse: UpdateUserByIdResponse = {
-                status: true,
-                message: 'Cập nhật avatar thành công',
-                data: user
-            }
-            return updateUserByIdResponse;
-        } catch (error: any) {
-            console.log("🚀 ~ file: UserService.ts:164 ~ UserService ~ uploadAvatar ~ error", error)
-            const updateUserByIdRespon: UpdateUserByIdResponse = {
-                status: false,
-                message: 'Cập nhật avatar thất bại',
-                data: null
-            }
-            return updateUserByIdRespon;
-        }
+  //hàm upload avatar
+  async uploadAvatar(
+    id: string,
+    avatar: Express.Multer.File,
+  ): Promise<UpdateUserByIdResponse> {
+    try {
+      const user = await this.userModel.findById(id);
+      if (!user) {
+        throw new Error('Không tìm thấy user');
+      }
+      const image = await CloudinaryUploader.uploadAvatar(avatar.path);
+      user.avatar = image.url;
+      await user.save();
+      const updateUserByIdResponse: UpdateUserByIdResponse = {
+        status: true,
+        message: 'Cập nhật avatar thành công',
+        data: user,
+      };
+      return updateUserByIdResponse;
+    } catch (error: any) {
+      console.log(
+        '🚀 ~ file: UserService.ts:164 ~ UserService ~ uploadAvatar ~ error',
+        error,
+      );
+      const updateUserByIdRespon: UpdateUserByIdResponse = {
+        status: false,
+        message: 'Cập nhật avatar thất bại',
+        data: null,
+      };
+      return updateUserByIdRespon;
     }
+  }
 }
-
-
-
-
 
 //hàm đăng ký tài khoản
 // async register(request: RegisterRequestUser): Promise<AllResponUser> {

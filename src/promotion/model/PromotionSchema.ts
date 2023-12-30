@@ -5,40 +5,37 @@ import { User } from 'src/user/model/User.Schema';
 
 export type PromotionDocument = Promotion & Document;
 
-
 @Schema()
 export class Promotion {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  UserId: User;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-    UserId: User;
+  @Prop({ required: true })
+  Tilte: string;
 
-    @Prop({ required: true })
-    Tilte: string;
+  @Prop({ required: true })
+  name: string;
 
-    @Prop({ required: true })
-    name: string;
+  @Prop({ required: true })
+  nameQR: Buffer;
 
-    @Prop({ required: true })
-    nameQR: Buffer;
+  @Prop({ required: true })
+  description: string;
 
-    @Prop({ required: true })
-    description: string;
+  @Prop({ required: true })
+  image: string;
 
-    @Prop({ required: true })
-    image: string;
+  @Prop({ required: true })
+  price: number;
 
-    @Prop({ required: true })
-    price: number;
+  @Prop({ required: true })
+  start: string;
 
-    @Prop({ required: true })
-    start: string;
+  @Prop({ required: true })
+  end: string;
 
-    @Prop({ required: true })
-    end: string;
-
-    @Prop({ required: true })
-    status: string;
-
+  @Prop({ required: true })
+  status: string;
 }
 
 export const PromotionSchema = SchemaFactory.createForClass(Promotion);

@@ -10,41 +10,38 @@ export type ProductDocument = Product & Document;
 //là một class đại diện cho một bảng trong database
 @Schema()
 export class Product {
-    @Prop()
-    name: string;
+  @Prop()
+  name: string;
 
-    @Prop()
-    price: number;
+  @Prop()
+  price: number;
 
-    @Prop()
-    description: string;
+  @Prop()
+  description: string;
 
-    @Prop()
-    image: string;
+  @Prop()
+  image: string;
 
-    //tham chiếu đến bảng category
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
-    category: Category;
+  //tham chiếu đến bảng category
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
+  category: Category;
 
-    //trong size sẽ có nhiều name và price trong bảng size
-    @Prop()
-    size:
-        [
-            {
-                name: string,
-                price: string
-            }
-        ]
+  //trong size sẽ có nhiều name và price trong bảng size
+  @Prop()
+  size: [
+    {
+      name: string;
+      price: string;
+    },
+  ];
 
-    @Prop()
-    topping:
-        [
-            {
-                name: string,
-                price: string
-            }
-        ]
+  @Prop()
+  topping: [
+    {
+      name: string;
+      price: string;
+    },
+  ];
 }
-
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

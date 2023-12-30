@@ -1,8 +1,5 @@
-
-
-
 export class AddCategoryRespon {
-    status: Boolean;
-    message: String;
-    data: any;
+  status: boolean;
+  message: string;
+  data: any;
 }

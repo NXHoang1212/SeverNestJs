@@ -1,6 +1,6 @@
 // //đây là model gửi đi
 
-// export class DeleteProductRequest { 
+// export class DeleteProductRequest {
 //     status: Boolean;
 //     message: String;
 // }

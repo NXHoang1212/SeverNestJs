@@ -1,4 +1,3 @@
-import { NoticationEntity } from "../enitity/Notication.Entity";
+import { NoticationEntity } from '../enitity/Notication.Entity';
 
-
-export class NoticationRequest extends NoticationEntity { }
+export class NoticationRequest extends NoticationEntity {}

@@ -1,86 +1,97 @@
-import { Controller, Get, Post, Delete, Body, Param, Res, HttpStatus, Query, UseGuards, Render } from "@nestjs/common";
-import { Response, Request } from "express";
-import { RegisterRequestUser } from "../dto/req/RegisterUser.Request";
-import { LoginRequestUser } from "../dto/req/LoginUser.Request";
-import { UpdateUserByIdRequest } from "../dto/req/UpdateUser.Request";
-import { GrauthAuthen } from "src/middleware/gaurd/Gaurd.Authen";
-import { ForgotPasswordRequest } from "../dto/req/Password.Request";
-import { AdminService } from "../service/Admin.Service";
-import { Roles } from "src/middleware/permission/Roles.decorator";
-import { UserRoles } from "../model/User.Schema";
-import { RolesGuard } from "src/middleware/permission/Roles.Guard";
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  Res,
+  HttpStatus,
+  Query,
+  UseGuards,
+  Render,
+} from '@nestjs/common';
+import { Response, Request } from 'express';
+import { RegisterRequestUser } from '../dto/req/RegisterUser.Request';
+import { LoginRequestUser } from '../dto/req/LoginUser.Request';
+import { UpdateUserByIdRequest } from '../dto/req/UpdateUser.Request';
+import { GrauthAuthen } from 'src/middleware/gaurd/Gaurd.Authen';
+import { ForgotPasswordRequest } from '../dto/req/Password.Request';
+import { AdminService } from '../service/Admin.Service';
+import { Roles } from 'src/middleware/permission/Roles.decorator';
+import { UserRoles } from '../model/User.Schema';
+import { RolesGuard } from 'src/middleware/permission/Roles.Guard';
 
 @Controller('api/admin')
 @UseGuards(RolesGuard)
 export class AdminController {
-    constructor(private readonly adminservice: AdminService) { }
-    //url: http://localhost:3000/cpanel/admin/login
-    @Post('login')
-    async login(@Body() body: LoginRequestUser, @Res() res: Response) {
-        try {
-            const user = await this.adminservice.loginadmin(body);
-            return res.status(HttpStatus.OK).json(user);
-        } catch (error) {
-            console.log(error);
-            return res.status(HttpStatus.BAD_REQUEST).json(error);
-        }
+  constructor(private readonly adminservice: AdminService) {}
+  //url: http://localhost:3000/cpanel/admin/login
+  @Post('login')
+  async login(@Body() body: LoginRequestUser, @Res() res: Response) {
+    try {
+      const user = await this.adminservice.loginadmin(body);
+      return res.status(HttpStatus.OK).json(user);
+    } catch (error) {
+      console.log(error);
+      return res.status(HttpStatus.BAD_REQUEST).json(error);
     }
-    @Get('login')
-    @Render('web/Login')
-    renderLogin() {
-        return {};
-    }
-    // @Get('Order')
-    // @Render('web/ManagerOrder')
-    // renderOrder() {
-    //     return {};
-    // }
-    @Get('Internal')
-    @Render('web/ManagerInternal')
-    renderInternal() {
-        return {};
-    }
-    @Get('Revenue')
-    @Render('web/ManagerRevenue')
-    renderRevenue() {
-        return {};
-    }
-    @Get('Statement')
-    @Render('web/ManagerStatement')
-    renderStatement() {
-        return {};
-    }
+  }
+  @Get('login')
+  @Render('web/Login')
+  renderLogin() {
+    return {};
+  }
+  // @Get('Order')
+  // @Render('web/ManagerOrder')
+  // renderOrder() {
+  //     return {};
+  // }
+  @Get('Internal')
+  @Render('web/ManagerInternal')
+  renderInternal() {
+    return {};
+  }
+  @Get('Revenue')
+  @Render('web/ManagerRevenue')
+  renderRevenue() {
+    return {};
+  }
+  @Get('Statement')
+  @Render('web/ManagerStatement')
+  renderStatement() {
+    return {};
+  }
 
-    @Get('ForgotPassword')
-    @Render('web/ForgotPasswordAdmin')
-    renderForgotPassword() {
-        return {};
-    }
-    @Get('AddOrder')
-    @Render('web/FormAddOrder')
-    renderAddOrder() {
-        return {};
-    }
+  @Get('ForgotPassword')
+  @Render('web/ForgotPasswordAdmin')
+  renderForgotPassword() {
+    return {};
+  }
+  @Get('AddOrder')
+  @Render('web/FormAddOrder')
+  renderAddOrder() {
+    return {};
+  }
 
-    @Get('AddInternal')
-    @Render('web/FormAddInternal')
-    renderAddInternal() {
-        return {};
-    }
+  @Get('AddInternal')
+  @Render('web/FormAddInternal')
+  renderAddInternal() {
+    return {};
+  }
 
-    @Get('AddCustomer')
-    @Render('web/FormAddStaft')
-    renderAddStaft() {
-        return {};
-    }
+  @Get('AddCustomer')
+  @Render('web/FormAddStaft')
+  renderAddStaft() {
+    return {};
+  }
 
-    @Get('AddStatement')
-    @Render('web/FormStatement')
-    renderAddStatement() {
-        return {};
-    }
+  @Get('AddStatement')
+  @Render('web/FormStatement')
+  renderAddStatement() {
+    return {};
+  }
 }
-
 
 // //url: http://localhost:3000/api/users/register
 // @Post('register')

@@ -7,31 +7,29 @@ export type AddressDocument = Address & Document;
 
 @Schema()
 export class Address {
-    @Prop()
-    name: string;
+  @Prop()
+  name: string;
 
-    @Prop()
-    DescribeAddRess: string;
+  @Prop()
+  DescribeAddRess: string;
 
-    @Prop()
-    Other: string;
+  @Prop()
+  Other: string;
 
-    @Prop()
-    Gate: string;
+  @Prop()
+  Gate: string;
 
-    @Prop()
-    NoteOrther: string;
+  @Prop()
+  NoteOrther: string;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-    userId: User;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  userId: User;
 
-    @Prop()
-    username: string;
+  @Prop()
+  username: string;
 
-    @Prop()
-    phone: string;
-
+  @Prop()
+  phone: string;
 }
-
 
 export const AddressSchema = SchemaFactory.createForClass(Address);

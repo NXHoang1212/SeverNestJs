@@ -2,7 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 import { LazyModuleLoader } from '@nestjs/core';
 import { MyLogger } from './middleware/logger/Logger.App';
 
@@ -21,8 +24,7 @@ async function bootstrap() {
   //   },
   //   templates: join(__dirname, '..', 'src/views'),
   // });
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
   app.useLogger(new MyLogger());
   app.useStaticAssets(join(__dirname, '..', 'src/views/public'));
   app.setBaseViewsDir(join(__dirname, '..', 'src/views'));
@@ -34,6 +36,5 @@ async function bootstrap() {
     module.hot.accept();
     module.hot.dispose(() => app.close());
   }
-
 }
 bootstrap();

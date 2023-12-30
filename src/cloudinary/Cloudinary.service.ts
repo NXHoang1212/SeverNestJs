@@ -4,20 +4,22 @@ import toStream = require('buffer-to-stream');
 
 @Injectable()
 export class CloudinaryService {
-    constructor() { }
-    async uploadFile(
-        file: Express.Multer.File,
-    ): Promise<UploadApiResponse | UploadApiErrorResponse> {
-        return new Promise((resolve, reject) => {
-            v2.uploader.upload_stream(
-                {
-                    resource_type: 'auto',
-                },
-                (error, result) => {
-                    if (error) return reject(error);
-                    resolve(result);
-                }
-            ).end(file.buffer)
-        })
-    }
+  constructor() {}
+  async uploadFile(
+    file: Express.Multer.File,
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      v2.uploader
+        .upload_stream(
+          {
+            resource_type: 'auto',
+          },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          },
+        )
+        .end(file.buffer);
+    });
+  }
 }

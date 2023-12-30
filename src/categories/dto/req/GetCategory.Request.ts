@@ -1,6 +1,4 @@
-
-
 export class GetCategoryRequest {
-    name: string;
-    image: string;
+  name: string;
+  image: string;
 }

@@ -1,14 +1,13 @@
 import { BannerEntity } from './../entity/Banner.Entity';
 
 export class AddBannerResponse {
-    status: Boolean;
-    message: String;
-    data: any;
+  status: boolean;
+  message: string;
+  data: any;
 }
 
-
 export class GetBannerResponse {
-    status: Boolean;
-    message: String;
-    data: BannerEntity[];
+  status: boolean;
+  message: string;
+  data: BannerEntity[];
 }

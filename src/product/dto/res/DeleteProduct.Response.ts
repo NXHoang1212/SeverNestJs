@@ -1,7 +1,7 @@
 //đây là model gửi đi
 
-export class DeleteProductResponse { 
-    status: Boolean;
-    message: String;
-    data: any;
+export class DeleteProductResponse {
+  status: boolean;
+  message: string;
+  data: any;
 }

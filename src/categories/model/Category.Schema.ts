@@ -5,13 +5,11 @@ import * as mongoose from 'mongoose';
 export type CategoryDocument = Category & Document;
 @Schema()
 export class Category {
+  @Prop()
+  name: string;
 
-    @Prop()
-    name: string;
-
-    @Prop()
-    image: string;
+  @Prop()
+  image: string;
 }
-
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

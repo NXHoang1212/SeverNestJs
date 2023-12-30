@@ -1,9 +1,7 @@
-import { AddressEntity } from "src/address/entity/AddressEntity";
-
-
+import { AddressEntity } from 'src/address/entity/AddressEntity';
 
 export class GetAddressResponse {
-    status: Boolean;
-    message: String;
-    data: any;
+  status: boolean;
+  message: string;
+  data: any;
 }
