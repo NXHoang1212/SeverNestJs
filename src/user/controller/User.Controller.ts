@@ -1,18 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-  UseGuards,
-  Render,
-  UseInterceptors,
-  UploadedFile,
-} from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get, Param, UseGuards, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { RegisterRequestUser } from '../dto/req/RegisterUser.Request';
 import { UserService } from '../service/User.Service';
@@ -25,7 +11,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('api/users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
   //url: http://localhost:3000/api/users/login
   @Post('login')
   async login(@Body() body: LoginRequestUser, @Res() res: Response) {

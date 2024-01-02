@@ -1,27 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-  UseInterceptors,
-  UploadedFile,
-  Req,
-  Render,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, HttpStatus, Param, Delete, Query, UseInterceptors, UploadedFile } from '@nestjs/common'
 import { Response, Request, query } from 'express';
 import { GetProductRequest } from '../dto/req/GetProduct.Request';
 import { AddProductRequest } from '../dto/req/AddProduct.Request';
 import { UpdateProductRequest } from '../dto/req/UpdateProduct.Request';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  MulterConfig,
-  CloudinaryUploader,
-} from 'src/middleware/upload/UploadMulter';
+import { MulterConfig, } from 'src/middleware/upload/UploadMulter';
 import { ProductAdminService } from '../service/ProductAdmin.Service';
 import { CategoryService } from '../../categories/service/Category.Service';
 import { formatPrice } from 'src/utils/FormatPrice';
@@ -31,7 +14,7 @@ export class ProductAdminController {
   constructor(
     private readonly productAdminService: ProductAdminService,
     private readonly categoryService: CategoryService,
-  ) {}
+  ) { }
 
   @Get('AddProduct')
   async getCategories(@Query() query: any, @Res() res: Response) {

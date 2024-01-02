@@ -16,7 +16,7 @@ export class ProductAdminService {
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
-  ) {}
+  ) { }
 
   async get(queries: GetProductRequest): Promise<GetProductResponse> {
     try {
@@ -53,10 +53,6 @@ export class ProductAdminService {
       };
       return reponseProduct;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: ProductService.ts ~ line 48 ~ ProductService ~ get ~ error',
-        error,
-      );
       const reponseProduct: GetProductResponse = {
         status: false,
         message: 'Get product fail',
@@ -66,11 +62,7 @@ export class ProductAdminService {
     }
   }
 
-  //hàm create trả về một đối tượng ProductEntity
-  async createWithImage(
-    request: AddProductRequest,
-    imageFile: Express.Multer.File,
-  ): Promise<AddProductResponse> {
+  async createWithImage(request: AddProductRequest, imageFile: Express.Multer.File,): Promise<AddProductResponse> {
     try {
       const uploadedImage = await CloudinaryUploader.upload(imageFile.path);
       const { name, price, description, category, size, topping } = request;
@@ -78,7 +70,7 @@ export class ProductAdminService {
         name: name,
         price: price,
         description: description,
-        image: uploadedImage.url, // Sử dụng URL hình ảnh từ Cloudinary
+        image: uploadedImage.secure_url,
         category: category,
         size: size,
         topping: topping,
@@ -89,16 +81,11 @@ export class ProductAdminService {
         message: 'Create product success',
         data: result,
       };
-      console.log(
-        '🚀 ~ file: ProductService.ts ~ line 80 ~ ProductService ~ create ~ responseProduct',
-        responseProduct,
-      );
       return responseProduct;
     } catch (error: any) {
-      console.log('Error while creating product:', error);
       const responseProduct: AddProductResponse = {
         status: false,
-        message: 'Create product fail',
+        message: error.message,
         data: null,
       };
       return responseProduct;
@@ -117,22 +104,13 @@ export class ProductAdminService {
       const reponseProduct: GetProductResponse = {
         status: true,
         message: 'Get product success',
-        //data là một mảng các đối tượng ProductEntity nên ta phải truyền vào một mảng
         data: [product],
       };
-      console.log(
-        '🚀 ~ file: ProductService.ts ~ line 101 ~ ProductService ~ detail ~ reponseProduct',
-        reponseProduct,
-      );
       return reponseProduct;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: ProductService.ts ~ line 105 ~ ProductService ~ detail ~ error',
-        error,
-      );
       const reponseProduct: GetProductResponse = {
         status: false,
-        message: 'Get product fail',
+        message: error.message,
         data: null,
       };
       return reponseProduct;
@@ -140,11 +118,7 @@ export class ProductAdminService {
   }
 
   //hàm update trả về một đối tượng ProductEntity
-  async updateWithImage(
-    id: string,
-    request: UpdateProductRequest,
-    imageFile: Express.Multer.File,
-  ): Promise<UpdateProductResponse> {
+  async updateWithImage(id: string, request: UpdateProductRequest, imageFile: Express.Multer.File,): Promise<UpdateProductResponse> {
     try {
       const uploadedImage = await CloudinaryUploader.upload(imageFile.path);
       const { name, price, description, category, size, topping } = request;
@@ -152,7 +126,6 @@ export class ProductAdminService {
       if (!product) {
         throw new Error('Product not found');
       }
-      // Cập nhật mảng size bên trong mảng
       if (Array.isArray(size) && size.length > 0) {
         size.forEach((item, index) => {
           product.size[index] = {
@@ -161,7 +134,6 @@ export class ProductAdminService {
           };
         });
       }
-      // Cập nhật mảng topping bên trong mảng
       if (Array.isArray(topping) && topping.length > 0) {
         topping.forEach((item, index) => {
           product.topping[index] = {
@@ -170,11 +142,10 @@ export class ProductAdminService {
           };
         });
       }
-      // Các trường khác vẫn được cập nhật như trước
       product.name = name ? name : product.name;
       product.price = price ? price : product.price;
       product.description = description ? description : product.description;
-      product.image = uploadedImage.url ? uploadedImage.url : product.image;
+      product.image = uploadedImage.secure_url ? uploadedImage.secure_url : product.image;
       product.category = category ? category : product.category;
       const result = await product.save();
       const responseProduct: UpdateProductResponse = {
@@ -184,10 +155,9 @@ export class ProductAdminService {
       };
       return responseProduct;
     } catch (error: any) {
-      console.log('Error:', error);
       const responseProduct: UpdateProductResponse = {
         status: false,
-        message: 'Update product fail',
+        message: error.message,
         data: null,
       };
       return responseProduct;
@@ -208,13 +178,9 @@ export class ProductAdminService {
       };
       return reponseProduct;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: ProductService.ts ~ line 148 ~ ProductService ~ delete ~ error',
-        error,
-      );
       const reponseProduct: DeleteProductResponse = {
         status: false,
-        message: 'Delete product fail',
+        message: error.message,
         data: null,
       };
       return reponseProduct;

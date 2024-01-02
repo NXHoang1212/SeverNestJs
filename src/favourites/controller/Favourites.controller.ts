@@ -1,23 +1,11 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-  Req,
-  Render,
-} from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get, Param, Delete } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { FavouritesService } from '../service/Favourites.service';
 import { FavouritesRequest } from '../dto/Favourites.Request';
 
 @Controller('api/users/favourites')
 export class FavouritesController {
-  constructor(private readonly favouriteService: FavouritesService) {}
+  constructor(private readonly favouriteService: FavouritesService) { }
 
   @Post('/create')
   async createFavourites(

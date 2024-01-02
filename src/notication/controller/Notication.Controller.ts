@@ -1,21 +1,11 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Put,
-} from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get, Param } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { NoticationService } from '../service/Notication.Service';
 import { NoticationRequest } from '../dto/Notication.Request';
 
 @Controller('api/users/noties')
 export class NoticationController {
-  constructor(private readonly noticationService: NoticationService) {}
+  constructor(private readonly noticationService: NoticationService) { }
 
   @Post('CreateNotication')
   async createNotication(

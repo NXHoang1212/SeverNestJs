@@ -24,7 +24,7 @@ export class PromotionUserService {
     } catch (error: any) {
       const reponse: PromotionResponse = {
         status: false,
-        message: 'Get Promotion Fail',
+        message: error.message,
         data: null,
       };
       return reponse;

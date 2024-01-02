@@ -12,24 +12,14 @@ export class PromotionAdminService {
   constructor(
     @InjectModel(Promotion.name)
     private readonly promotionModel: Model<PromotionDocument>,
-  ) {}
+  ) { }
 
   async createPromotion(
     request: PromotionRequest,
     file: Express.Multer.File,
   ): Promise<PromotionResponse> {
     try {
-      const {
-        UserId,
-        Tilte,
-        name,
-        nameQR,
-        description,
-        price,
-        start,
-        end,
-        status,
-      } = request;
+      const { UserId, Tilte, name, nameQR, description, price, start, end, status, } = request;
       const qrCode = await generateQrCode(nameQR.toString());
       const image = await CloudinaryUploader.uploadPromotion(file.path);
       const promotion = new this.promotionModel({
@@ -43,7 +33,7 @@ export class PromotionAdminService {
         end,
         status,
         qrCode,
-        image: image.url,
+        image: image.secure_url,
       });
       const result = await promotion.save();
       const reponse: PromotionResponse = {
@@ -55,7 +45,7 @@ export class PromotionAdminService {
     } catch (error: any) {
       const reponse: PromotionResponse = {
         status: false,
-        message: 'Create Promotion Fail',
+        message: error.message,
         data: null,
       };
       return reponse;
@@ -74,7 +64,7 @@ export class PromotionAdminService {
     } catch (error: any) {
       const reponse: PromotionResponse = {
         status: false,
-        message: 'Get Promotion Fail',
+        message: error.message,
         data: null,
       };
       return reponse;
@@ -93,7 +83,7 @@ export class PromotionAdminService {
     } catch (error: any) {
       const reponse: PromotionResponse = {
         status: false,
-        message: 'Delete Promotion Fail',
+        message: error.message,
         data: null,
       };
       return reponse;
@@ -125,7 +115,7 @@ export class PromotionAdminService {
     } catch (error: any) {
       const reponse: PromotionResponse = {
         status: false,
-        message: 'Mã giảm giá không hết hạn',
+        message: error.message,
         data: null,
       };
       return reponse;

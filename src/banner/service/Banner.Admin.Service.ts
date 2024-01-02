@@ -11,21 +11,16 @@ export class BannerAdminService {
   constructor(
     @InjectModel(Banner.name)
     private readonly bannerModel: Model<BannerDocument>,
-  ) {}
+  ) { }
 
-  async create(
-    request: AddBannerRequest,
-    imageFile?: Express.Multer.File,
-  ): Promise<AddBannerResponse> {
+  async create(request: AddBannerRequest, imageFile?: Express.Multer.File,): Promise<AddBannerResponse> {
     try {
       const { name } = request;
-      const uploadedImage = await CloudinaryUploader.uploadBanner(
-        imageFile.path,
-      );
+      const uploadedImage = await CloudinaryUploader.uploadBanner(imageFile.path);
       if (uploadedImage) {
         const banner = new this.bannerModel({
           name: name,
-          image: uploadedImage.url,
+          image: uploadedImage.secure_url,
         });
         const result = await banner.save();
         const reponseBanner: AddBannerResponse = {
@@ -102,23 +97,17 @@ export class BannerAdminService {
     }
   }
 
-  async update(
-    id: string,
-    request: AddBannerRequest,
-    imageFile?: Express.Multer.File,
-  ): Promise<AddBannerResponse> {
+  async update(id: string, request: AddBannerRequest, imageFile?: Express.Multer.File,): Promise<AddBannerResponse> {
     try {
       const { name } = request;
-      const uploadedImage = await CloudinaryUploader.uploadBanner(
-        imageFile.path,
-      );
+      const uploadedImage = await CloudinaryUploader.uploadBanner(imageFile.path);
       const banner = await this.bannerModel.findById(id);
       if (!banner) {
         throw new Error('Không tìm thấy hình ảnh');
       } else {
         if (uploadedImage) {
           banner.name = name ? name : banner.name;
-          banner.image = uploadedImage.url ? uploadedImage.url : banner.image;
+          banner.image = uploadedImage.secure_url ? uploadedImage.secure_url : banner.image;
           const result = await banner.save();
           const reponseBanner: AddBannerResponse = {
             status: true,

@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { GetBannerRequest, AddBannerRequest } from '../dto/Banner.Request';
 import { BannerUsersService } from '../service/Banner.Users.Service';

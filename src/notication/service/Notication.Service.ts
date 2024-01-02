@@ -15,11 +15,10 @@ admin.initializeApp({
 
 @Injectable()
 export class NoticationService {
-  constructor(
-    @InjectModel(Notication.name)
-    private readonly orderModel: Model<NoticationDocument>,
+  constructor(@InjectModel(Notication.name)
+  private readonly orderModel: Model<NoticationDocument>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async createNotication(body: NoticationRequest): Promise<NoticationResponse> {
     try {

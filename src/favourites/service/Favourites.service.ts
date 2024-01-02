@@ -7,10 +7,9 @@ import { FavouritesResponse } from '../dto/Favourites.Response';
 
 @Injectable()
 export class FavouritesService {
-  constructor(
-    @InjectModel(Favourites.name)
-    private readonly favouritesModel: Model<FavouritesDocument>,
-  ) {}
+  constructor(@InjectModel(Favourites.name)
+  private readonly favouritesModel: Model<FavouritesDocument>,
+  ) { }
 
   async createFavourites(
     request: FavouritesRequest,

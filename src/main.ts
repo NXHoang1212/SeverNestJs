@@ -13,17 +13,6 @@ import { MyLogger } from './middleware/logger/Logger.App';
 declare const module: any;
 
 async function bootstrap() {
-  // const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
-  // app.useStaticAssets({
-  //   root: join(__dirname, '..', 'src/views/public'),
-  //   prefix: '/public/',
-  // });
-  // app.setViewEngine({
-  //   engine: {
-  //     handlebars: require('handlebars'),
-  //   },
-  //   templates: join(__dirname, '..', 'src/views'),
-  // });
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
   app.useLogger(new MyLogger());
   app.useStaticAssets(join(__dirname, '..', 'src/views/public'));

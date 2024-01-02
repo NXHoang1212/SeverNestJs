@@ -1,19 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-  UseInterceptors,
-  UploadedFile,
-  Req,
-  Render,
-  Put,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Res, HttpStatus, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { CategoryService } from '../service/Category.Service';
 import { AddCategoryRequest } from '../dto/req/AddCatgory.Request';

@@ -1,10 +1,4 @@
-import {
-  WebSocketGateway,
-  WebSocketServer,
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  SubscribeMessage,
-} from '@nestjs/websockets';
+import { WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
 //đây là một websocket gateway để xử lý realtime event cho client có đường dẫn là /event localhost:4000/event

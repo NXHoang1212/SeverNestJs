@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-  Req,
-} from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get, Param, Delete } from '@nestjs/common';
 import { Response } from 'express';
 import { CartSerivce } from '../service/Cart.Service';
 import { AddCartRequest } from '../dto/req/AddCart.Request';
@@ -17,7 +6,7 @@ import { GetCartRequest } from '../dto/req/GetCart.Request';
 
 @Controller('api/users/cart')
 export class CartController {
-  constructor(private readonly cartService: CartSerivce) {}
+  constructor(private readonly cartService: CartSerivce) { }
 
   @Post('create')
   async createCart(@Body() request: AddCartRequest, @Res() res: Response) {

@@ -1,19 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-  UseInterceptors,
-  UploadedFile,
-  Req,
-  Render,
-  Put,
-} from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Res, HttpStatus, Query, UseInterceptors, UploadedFile, Put, } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { GetBannerRequest, AddBannerRequest } from '../dto/Banner.Request';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -22,7 +7,7 @@ import { BannerAdminService } from '../service/Banner.Admin.Service';
 
 @Controller('api/admin')
 export class BannerAdminController {
-  constructor(private readonly bannerAdminSerivce: BannerAdminService) {}
+  constructor(private readonly bannerAdminSerivce: BannerAdminService) { }
 
   @Get('Banner')
   async get(@Query() query: GetBannerRequest, @Res() res: Response) {

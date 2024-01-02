@@ -10,10 +10,9 @@ import { Types } from 'mongoose';
 
 @Injectable()
 export class CartSerivce {
-  constructor(
-    @InjectModel(Cart.name)
-    private readonly CartModel: Model<CartDocument>,
-  ) {}
+  constructor(@InjectModel(Cart.name)
+  private readonly CartModel: Model<CartDocument>,
+  ) { }
 
   async createCart(request: AddCartRequest): Promise<AddCartResponse> {
     try {
@@ -88,10 +87,7 @@ export class CartSerivce {
     }
   }
 
-  async getProductDetailInCart(
-    userId: string,
-    productId: string,
-  ): Promise<GetCartResponse> {
+  async getProductDetailInCart(userId: string, productId: string,): Promise<GetCartResponse> {
     try {
       const result = await this.CartModel.findOne({ UserId: userId });
       if (!result) {
@@ -124,11 +120,7 @@ export class CartSerivce {
     }
   }
 
-  async updateProductInCart(
-    userId: string,
-    productIdToUpdate: string,
-    updatedProductInfo: any,
-  ): Promise<AddCartResponse> {
+  async updateProductInCart(userId: string, productIdToUpdate: string, updatedProductInfo: any,): Promise<AddCartResponse> {
     try {
       const cart = await this.CartModel.findOne({ UserId: userId });
       if (!cart) {
@@ -163,11 +155,7 @@ export class CartSerivce {
     }
   }
 
-  // Tìm và cập nhật trạng thái cho tất cả các sản phẩm có trạng thái "Đã thêm vào giỏ hàng"
-  async updateStatusProductInCart(
-    userId: string,
-    request: any,
-  ): Promise<GetCartResponse> {
+  async updateStatusProductInCart(userId: string, request: any,): Promise<GetCartResponse> {
     try {
       const cart = await this.CartModel.findOne({ UserId: userId });
       if (!cart) {
@@ -203,19 +191,13 @@ export class CartSerivce {
     }
   }
 
-  async deleteProductInCart(
-    userId: string,
-    productIdToDelete: string,
-  ): Promise<AddCartResponse> {
+  async deleteProductInCart(userId: string, productIdToDelete: string,): Promise<AddCartResponse> {
     try {
       const cart = await this.CartModel.findOne({ UserId: userId });
       if (!cart) {
         throw new Error('Cart not found');
       }
-      // Tìm sản phẩm cần xóa bằng productIdToDelete
-      const productIndex = cart.ProductId.findIndex(
-        (product) => product._id.toString() === productIdToDelete,
-      );
+      const productIndex = cart.ProductId.findIndex((product) => product._id.toString() === productIdToDelete);
       if (productIndex === -1) {
         throw new Error('Product not found');
       }

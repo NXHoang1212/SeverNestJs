@@ -1,18 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-  Req,
-  Render,
-  UseInterceptors,
-  UploadedFile,
-} from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Param, Delete, Post, Body, UseInterceptors, UploadedFile, Render } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { PromotionAdminService } from '../service/Promotion.Admin.Service';
 import { PromotionRequest } from '../dto/Promotion.Request';
@@ -21,7 +7,7 @@ import { MulterConfig, storage } from '../../middleware/upload/UploadMulter';
 
 @Controller('api/admin')
 export class PromotionAdminController {
-  constructor(private readonly promotionadminService: PromotionAdminService) {}
+  constructor(private readonly promotionadminService: PromotionAdminService) { }
 
   @Get('discounts')
   async getPromotion(@Res() res: Response) {
@@ -50,16 +36,9 @@ export class PromotionAdminController {
     @Res() res: Response,
   ) {
     try {
-      const response = await this.promotionadminService.createPromotion(
-        body,
-        file,
-      );
+      const response = await this.promotionadminService.createPromotion(body, file,);
       return res.status(HttpStatus.OK).json(response);
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: Promotion.Admin.Controller.ts:44 ~ PromotionAdminController ~ createPromotion ~ error:',
-        error,
-      );
       return res.status(HttpStatus.BAD_REQUEST).json(error);
     }
   }
@@ -77,8 +56,7 @@ export class PromotionAdminController {
   @Delete('deletePromotionExpired')
   async deletePromotionExpired(@Res() res: Response) {
     try {
-      const response =
-        await this.promotionadminService.deletePromotionExpired();
+      const response = await this.promotionadminService.deletePromotionExpired();
       return res.status(HttpStatus.OK).json(response);
     } catch (error: any) {
       return res.status(HttpStatus.BAD_REQUEST).json(error);

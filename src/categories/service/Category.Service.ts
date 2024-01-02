@@ -10,17 +10,16 @@ import { CloudinaryUploader } from 'src/middleware/upload/UploadMulter';
 
 @Injectable()
 export class CategoryService {
-  constructor(
-    @InjectModel(Category.name)
-    private readonly categoryModel: Model<CategoryDocument>,
-  ) {}
-
-  async create(request: AddCategoryRequest): Promise<AddCategoryRespon> {
+  constructor(@InjectModel(Category.name)
+  private readonly categoryModel: Model<CategoryDocument>,
+  ) { }
+  async create(request: AddCategoryRequest, imageFile?: Express.Multer.File,): Promise<AddCategoryRespon> {
     try {
-      const { name, image } = request;
+      const { name } = request;
+      const uploadedImage = await CloudinaryUploader.uploadCategory(imageFile.path);
       const newCategory = new this.categoryModel({
         name: name,
-        image: image,
+        image: uploadedImage.secure_url,
       });
       const result = await newCategory.save();
       const reponseProduct: AddCategoryRespon = {
@@ -88,20 +87,14 @@ export class CategoryService {
     }
   }
 
-  async update(
-    id: string,
-    request: AddCategoryRequest,
-    imageFile?: Express.Multer.File,
-  ): Promise<AddCategoryRespon> {
+  async update(id: string, request: AddCategoryRequest, imageFile?: Express.Multer.File,): Promise<AddCategoryRespon> {
     try {
-      const uploadedImage = await CloudinaryUploader.uploadCategory(
-        imageFile.path,
-      );
+      const uploadedImage = await CloudinaryUploader.uploadCategory(imageFile.path);
       const { name } = request;
       if (uploadedImage) {
         const result = await this.categoryModel.findByIdAndUpdate(id, {
           name: name,
-          image: uploadedImage.url,
+          image: uploadedImage.secure_url,
         });
         const reponseProduct: AddCategoryRespon = {
           status: true,

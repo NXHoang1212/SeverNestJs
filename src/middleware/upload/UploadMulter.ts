@@ -10,10 +10,7 @@ cloudinary.config({
   api_key: '217919634414516',
   api_secret: 'I1PFuGbCo_iZeezOqcCzAcSNWNI',
 });
-console.log(
-  '🚀 ~ file: UploadMulter.ts ~ line 27 ~ cloudinary',
-  cloudinary.config(),
-);
+console.log('🚀 ~ file: UploadMulter.ts ~ line 27 ~ cloudinary', cloudinary.config(),);
 
 // Cấu hình multer
 export const MulterConfig = {

@@ -1,16 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Param,
-  Res,
-  HttpStatus,
-  Query,
-  UseGuards,
-  Render,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, HttpStatus, Render, UseGuards, Param } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { RegisterRequestUser } from '../dto/req/RegisterUser.Request';
 import { LoginRequestUser } from '../dto/req/LoginUser.Request';
@@ -25,7 +13,7 @@ import { RolesGuard } from 'src/middleware/permission/Roles.Guard';
 @Controller('api/admin')
 @UseGuards(RolesGuard)
 export class AdminController {
-  constructor(private readonly adminservice: AdminService) {}
+  constructor(private readonly adminservice: AdminService) { }
   //url: http://localhost:3000/cpanel/admin/login
   @Post('login')
   async login(@Body() body: LoginRequestUser, @Res() res: Response) {

@@ -19,7 +19,7 @@ export class UserService {
     private readonly userModel: Model<UserDocument>,
     private readonly jwtService: JwtService,
     private readonly mailerService: MailerService,
-  ) {}
+  ) { }
   async login(request: LoginRequestUser): Promise<AllResponseUser> {
     try {
       let user;
@@ -51,20 +51,15 @@ export class UserService {
       };
       return allResponUser;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: UserService.ts:75 ~ UserService ~ login ~ error:',
-        error,
-      );
       const allResponUser: AllResponseUser = {
         status: false,
-        message: 'Đăng nhập thất bại',
+        message: error.message,
         data: null,
       };
       return allResponUser;
     }
   }
 
-  //hàm lấy thông tin id user
   async getUserById(id: string): Promise<AllResponseUser> {
     try {
       const user = await this.userModel.findById(id);
@@ -78,10 +73,6 @@ export class UserService {
       };
       return allResponUser;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: UserService.ts:103 ~ UserService ~ getUserById ~ error',
-        error,
-      );
       const allResponUser: AllResponseUser = {
         status: false,
         message: 'Lấy thông tin user thất bại',
@@ -91,11 +82,7 @@ export class UserService {
     }
   }
 
-  //hàm update thông tin user
-  async updateUserById(
-    id: string,
-    request: UpdateUserByIdRequest,
-  ): Promise<UpdateUserByIdResponse> {
+  async updateUserById(id: string, request: UpdateUserByIdRequest,): Promise<UpdateUserByIdResponse> {
     try {
       const user = await this.userModel.findById(id);
       if (!user) {
@@ -117,31 +104,23 @@ export class UserService {
       };
       return updateUserByIdResponse;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: UserService.ts:133 ~ UserService ~ updateUserById ~ error',
-        error,
-      );
       const updateUserByIdRespon: UpdateUserByIdResponse = {
         status: false,
-        message: 'Cập nhật thông tin user thất bại',
+        message: error.message,
         data: null,
       };
       return updateUserByIdRespon;
     }
   }
 
-  //hàm upload avatar
-  async uploadAvatar(
-    id: string,
-    avatar: Express.Multer.File,
-  ): Promise<UpdateUserByIdResponse> {
+  async uploadAvatar(id: string, avatar: Express.Multer.File,): Promise<UpdateUserByIdResponse> {
     try {
       const user = await this.userModel.findById(id);
       if (!user) {
         throw new Error('Không tìm thấy user');
       }
       const image = await CloudinaryUploader.uploadAvatar(avatar.path);
-      user.avatar = image.url;
+      user.avatar = image.secure_url;
       await user.save();
       const updateUserByIdResponse: UpdateUserByIdResponse = {
         status: true,
@@ -150,13 +129,9 @@ export class UserService {
       };
       return updateUserByIdResponse;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: UserService.ts:164 ~ UserService ~ uploadAvatar ~ error',
-        error,
-      );
       const updateUserByIdRespon: UpdateUserByIdResponse = {
         status: false,
-        message: 'Cập nhật avatar thất bại',
+        message: error.message,
         data: null,
       };
       return updateUserByIdRespon;
