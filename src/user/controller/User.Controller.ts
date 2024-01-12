@@ -31,10 +31,6 @@ export class UserController {
       const getUserById = await this.userService.getUserById(id);
       return res.status(HttpStatus.OK).json(getUserById);
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: UserController.ts ~ line 47 ~ UserController ~ getUserById ~ error',
-        error,
-      );
       return res.status(HttpStatus.BAD_REQUEST).json(error);
     }
   }

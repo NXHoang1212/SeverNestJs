@@ -34,7 +34,7 @@ export class User {
   @Prop()
   password: string;
 
-  @Prop({ default: null })
+  @Prop()
   avatar: string;
 
   @Prop()

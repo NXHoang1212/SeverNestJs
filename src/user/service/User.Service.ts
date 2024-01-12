@@ -24,15 +24,15 @@ export class UserService {
     try {
       let user;
       if (request.facebookId) {
-        user = await this.userModel.findOne({ facebookId: request.facebookId });
+        user = await this.userModel.findOne({ facebookId: request.facebookId, avatar: request.avatar });
         if (!user) {
-          user = new this.userModel({ facebookId: request.facebookId });
+          user = new this.userModel({ facebookId: request.facebookId , avatar: request.avatar });
           await user.save();
         }
       } else if (request.googleId) {
-        user = await this.userModel.findOne({ googleId: request.googleId });
+        user = await this.userModel.findOne({ googleId: request.googleId, avatar: request.avatar });
         if (!user) {
-          user = new this.userModel({ googleId: request.googleId });
+          user = new this.userModel({ googleId: request.googleId, avatar: request.avatar });
           await user.save();
         }
       } else {

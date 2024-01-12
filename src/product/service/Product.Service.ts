@@ -9,13 +9,15 @@ import { AddProductResponse } from '../dto/res/AddProduct.Response';
 import { UpdateProductRequest } from '../dto/req/UpdateProduct.Request';
 import { UpdateProductResponse } from '../dto/res/UpdateProduct.Response';
 import { DeleteProductResponse } from '../dto/res/DeleteProduct.Response';
+import { ProductGateway } from 'src/event/Event.gateway';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
-  ) {}
+    private readonly productGateway: ProductGateway,
+  ) { }
 
   async get(queries: GetProductRequest): Promise<GetProductResponse> {
     try {
@@ -35,7 +37,7 @@ export class ProductService {
       }
       const result = await this.productModel
         .find(query)
-        .populate('category', '_id name image');
+        .populate('category', '_id name image')
       const reponseProduct: GetProductResponse = {
         status: true,
         message: 'Get product success',
@@ -45,24 +47,21 @@ export class ProductService {
     } catch (error: any) {
       const reponseProduct: GetProductResponse = {
         status: false,
-        message: 'Get product fail',
+        message: error.message,
         data: null,
       };
       return reponseProduct;
     }
   }
 
-  async create(
-    request: AddProductRequest,
-    image: string,
-  ): Promise<AddProductResponse> {
+  async create(request: AddProductRequest, image: string): Promise<AddProductResponse> {
     try {
       const { name, price, description, category, size, topping } = request;
       const product = new this.productModel({
         name: name,
         price: price,
         description: description,
-        image: image, // Sử dụng URL hình ảnh từ Cloudinary
+        image: image,
         category: category,
         size: size,
         topping: topping,
@@ -73,16 +72,11 @@ export class ProductService {
         message: 'Create product success',
         data: result,
       };
-      console.log(
-        '🚀 ~ file: ProductService.ts ~ line 80 ~ ProductService ~ create ~ responseProduct',
-        responseProduct,
-      );
       return responseProduct;
     } catch (error: any) {
-      console.log('Error while creating product:', error);
       const responseProduct: AddProductResponse = {
         status: false,
-        message: 'Create product fail',
+        message: error.message,
         data: null,
       };
       return responseProduct;
@@ -104,24 +98,16 @@ export class ProductService {
       };
       return reponseProduct;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: ProductService.ts ~ line 105 ~ ProductService ~ detail ~ error',
-        error,
-      );
       const reponseProduct: GetProductResponse = {
         status: false,
-        message: 'Get product fail',
+        message: error.message,
         data: null,
       };
       return reponseProduct;
     }
   }
 
-  async update(
-    id: string,
-    request: UpdateProductRequest,
-    image: string,
-  ): Promise<UpdateProductResponse> {
+  async update(id: string, request: UpdateProductRequest, image: string,): Promise<UpdateProductResponse> {
     try {
       const { name, price, description, category, size, topping } = request;
       const product = await this.productModel.findById(id);
@@ -157,10 +143,9 @@ export class ProductService {
       };
       return responseProduct;
     } catch (error: any) {
-      console.log('Error:', error);
       const responseProduct: UpdateProductResponse = {
         status: false,
-        message: 'Update product fail',
+        message: error.message,
         data: null,
       };
       return responseProduct;
@@ -180,16 +165,22 @@ export class ProductService {
       };
       return reponseProduct;
     } catch (error: any) {
-      console.log(
-        '🚀 ~ file: ProductService.ts ~ line 148 ~ ProductService ~ delete ~ error',
-        error,
-      );
       const reponseProduct: DeleteProductResponse = {
         status: false,
-        message: 'Delete product fail',
+        message: error.message,
         data: null,
       };
       return reponseProduct;
     }
   }
+
+  // async getRealtimeProduct() {
+  //   try {
+  //     const products = await this.productModel.find().populate('category', '_id name image');
+  //     this.productGateway.sendProductUpdate(products);
+  //     console.log('🚀 ~ file: Product.Service.ts ~ line 217 ~ ProductService ~ getRealtimeProduct ~ products', products);
+  //   } catch (error: any) {
+  //     console.log(error);
+  //   }
+  // }
 }

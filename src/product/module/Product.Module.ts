@@ -9,6 +9,7 @@ import { ProductAdminService } from '../service/ProductAdmin.Service';
 import { CategoryModule } from 'src/categories/module/Category.Module';
 import { CategoryService } from 'src/categories/service/Category.Service';
 import { Category, CategorySchema } from 'src/categories/model/Category.Schema';
+import { ProductGateway } from 'src/event/Event.gateway';
 
 @Module({
   imports: [
@@ -25,12 +26,12 @@ import { Category, CategorySchema } from 'src/categories/model/Category.Schema';
     CategoryModule,
   ],
   controllers: [ProductUserController, ProductAdminController],
-  providers: [ProductService, ProductAdminService, CategoryService],
+  providers: [ProductService, ProductAdminService, CategoryService, ProductGateway],
 })
 export class ProductModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerProduct)
-      .forRoutes(ProductUserController, ProductAdminController);
+      .forRoutes(ProductUserController, ProductAdminController, ProductGateway);
   }
 }
